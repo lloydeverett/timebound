@@ -107,7 +107,7 @@ $(function() {
     function updateUrl() {
         const url = new URL(window.location)
         url.searchParams.set("data", stringToBase64($('#textarea').val()));
-        history.pushState(null, '', url);
+        history.replaceState(null, '', url);
     }
 
     { // load state
