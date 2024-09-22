@@ -218,7 +218,7 @@ $(function() {
           }
           let title = null;
           if ('title' in obj) {
-            title = obj.title;
+            title = String(obj.title);
           }
           result = {
             sections: sections,
