@@ -58,22 +58,22 @@
                     <!-- border for each month -->
                     <div x-bind:style="`z-index: 100; grid-column: ${column(fromYear, year, month, 1)}; grid-row: 3 / -1; ${yearIndex === 0 && month === 1 ? '' : 'border-left: 1px solid var(--month-color);'}`"></div>
                     <!-- row backgrounds for day columns -->
-                    <div x-bind:style="`grid-row: 3; grid-column: ${column(fromYear, year, month, 1)} / ${column(fromYear, year, month, daysInMonth(year, month)) + 1}; background: var(--days-color);`"></div>
-                    <div x-bind:style="`grid-row: 4; grid-column: ${column(fromYear, year, month, 1)} / ${column(fromYear, year, month, daysInMonth(year, month)) + 1}; background: var(--weekday-color);`"></div>
+                    <div x-bind:style="`grid-row: 4; grid-column: ${column(fromYear, year, month, 1)} / ${column(fromYear, year, month, daysInMonth(year, month)) + 1}; background: var(--days-color);`"></div>
+                    <div x-bind:style="`grid-row: 5; grid-column: ${column(fromYear, year, month, 1)} / ${column(fromYear, year, month, daysInMonth(year, month)) + 1}; background: var(--weekday-color);`"></div>
                     <!-- days in month -->
                     <template x-for="day in range(1, daysInMonth(year, month))">
                       <div x-bind:class="`day-column-header-container ${day === 1 ? 'day-column-header-container-first' : ''}`" style="display: contents;">
                         <!-- date -->
-                        <div x-bind:style="`grid-column: ${column(fromYear, year, month, day)}; grid-row: 3;`">
+                        <div x-bind:style="`grid-column: ${column(fromYear, year, month, day)}; grid-row: 4;`">
                           <div class="day-column-header-text" x-text="day"></div>
                         </div>
                         <!-- day of week -->
-                        <div x-bind:style="`grid-column: ${column(fromYear, year, month, day)}; grid-row: 4;`">
+                        <div x-bind:style="`grid-column: ${column(fromYear, year, month, day)}; grid-row: 5;`">
                           <div class="day-column-header-text" x-text="weekday(year, month, day)[0]"></div>
                         </div>
                         <!-- background for weekends -->
                         <template x-if="isWeekend(year, month, day)">
-                          <div class="day-of-week-column-header" x-bind:style="`grid-column: ${column(fromYear, year, month, day)}; grid-row: 5 / -1; background: var(--weekend-color);`"></div>
+                          <div class="day-of-week-column-header" x-bind:style="`grid-column: ${column(fromYear, year, month, day)}; grid-row: 6 / -1; background: var(--weekend-color);`"></div>
                         </template>
                       </div>
                     </template>
@@ -127,7 +127,7 @@
     </div>
 
     <!-- highlight today's date -->
-    <div id="today-column-background" x-bind:style="`grid-column: ${todayColumn(fromYear, toYear)}; grid-row: 5 / -1; background: var(--today-color); z-index: 5;`"></div>
+    <div id="today-column-background" x-bind:style="`grid-column: ${todayColumn(fromYear, toYear)}; grid-row: 6 / -1; background: var(--today-color); z-index: 5;`"></div>
 
     <!-- column at the end of the grid to hide overflows -->
     <div x-bind:style="`grid-column: ${column(fromYear, toYear, 12, 31) + 1}; grid-row: 1 / -1; background: rgb(50, 48, 47);`"></div>
