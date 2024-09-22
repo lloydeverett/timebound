@@ -49,6 +49,7 @@
             <div x-bind:style="`grid-row: 1; grid-column: ${column(fromYear, year, 1, 1)} / ${column(fromYear, year, 12, 31) + 1}; background: var(--years-color);`">
               <span class="sticky-against-row-headers" x-text="year"></span>
             </div>
+            <!-- months and days -->
             <template x-for="month in range(1, 12)">
                 <div style="display: contents;">
                     <!-- month names -->
