@@ -152,7 +152,8 @@ body {
                                                      /* compensate so text is centered despite overflow */
 }
 .day-column-header-container-first .day-column-header-text {
-  margin-left: 0;
+  margin-left: 0; /* let the first day of the month overflow off to the right if need be;
+                     it looks better than centering for the first day of the month */
 }
 
 textarea {
