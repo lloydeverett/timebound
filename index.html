@@ -101,7 +101,7 @@
             <option x-bind:value="year" x-text="year"></option>
           </template>
         </select>
-        <select id="toYear-select" style="flex: 1; text-align: center; border: none; background: #3b3b3b; border-radius: 4px; -webkit-appearance:none;">
+        <select id="toYear-select" style="flex: 1; text-align: center; border: none; background: #3b3b3b; border-radius: 4px; -webkit-appearance:none;" x-effect="fromYear; toYear; $nextTick(() => $('#fromYear-select').val('' + fromYear));">
           <template x-for="year in range(fromYear, new Date().getFullYear() + 5)" x-effect="fromYear; toYear; $nextTick(() => $('#toYear-select').val('' + toYear));">
             <option x-bind:value="year" x-text="year"></option>
           </template>
