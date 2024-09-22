@@ -147,6 +147,11 @@ body {
 .day-column-header-text {
   text-align: center;
   padding: 0;
+  min-width: 17px;
+  margin-left: calc(-1 * max(17px - 100%, 0px) / 2);
+}
+.day-column-header-container-first .day-column-header-text {
+  margin-left: 0;
 }
 
 textarea {

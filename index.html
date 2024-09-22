@@ -62,18 +62,18 @@
                     <div x-bind:style="`grid-row: 4; grid-column: ${column(fromYear, year, month, 1)} / ${column(fromYear, year, month, daysInMonth(year, month)) + 1}; background: var(--weekday-color);`"></div>
                     <!-- days in month -->
                     <template x-for="day in range(1, daysInMonth(year, month))">
-                      <div class="day-column-header-container" style="display: contents;">
+                      <div x-bind:class="`day-column-header-container ${day === 1 ? 'day-column-header-container-first' : ''}`" style="display: contents;">
                         <!-- date -->
-                        <div x-bind:style="`width: var(--column-width); grid-column: ${column(fromYear, year, month, day)}; grid-row: 3;`">
-                          <div style="min-width: 17px;" class="day-column-header-text" x-text="('' + day).length === 1 ? '0' + day : day"></div>
+                        <div x-bind:style="`grid-column: ${column(fromYear, year, month, day)}; grid-row: 3;`">
+                          <div class="day-column-header-text" x-text="day"></div>
                         </div>
                         <!-- day of week -->
-                        <div x-bind:style="`width: var(--column-width); grid-column: ${column(fromYear, year, month, day)}; grid-row: 4;`">
-                          <div style="min-width: 17px;" class="day-column-header-text" x-text="weekday(year, month, day)[0]"></div>
+                        <div x-bind:style="`grid-column: ${column(fromYear, year, month, day)}; grid-row: 4;`">
+                          <div class="day-column-header-text" x-text="weekday(year, month, day)[0]"></div>
                         </div>
                         <!-- background for weekends -->
                         <template x-if="isWeekend(year, month, day)">
-                          <div class="day-of-week-column-header" x-bind:style="`width: var(--column-width); grid-column: ${column(fromYear, year, month, day)}; grid-row: 5 / -1; background: var(--weekend-color);`"></div>
+                          <div class="day-of-week-column-header" x-bind:style="`grid-column: ${column(fromYear, year, month, day)}; grid-row: 5 / -1; background: var(--weekend-color);`"></div>
                         </template>
                       </div>
                     </template>
