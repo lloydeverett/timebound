@@ -216,9 +216,14 @@ $(function() {
                 items: items
             });
           }
+          let title = null;
+          if ('title' in obj) {
+            title = obj.title;
+          }
           result = {
             sections: sections,
-            rowCount: row - 1
+            rowCount: row - 1,
+            title: title
           };
         } catch (err) {
           console.info(err);
@@ -228,6 +233,9 @@ $(function() {
         $('#textarea').toggleClass('data-invalid', false);
         Alpine.store('grid').sections = result.sections;
         Alpine.store('grid').rowCount = result.rowCount;
+        if (result.title) {
+            document.title = result.title + ' - datum';
+        }
     }
     $('#textarea').on('input', function() {
         updateUrl();
