@@ -67,9 +67,10 @@ body {
   --month-border-color:   #557ba0;
   --days-color:           #303952;
   --weekday-color:        #303952;
-  --today-color:          #3d6f50;
-  --today-header-color:   #375845;
-  --today-border-color:   #375845;
+  --today-color:          #3e64bd;
+  --today-button-color:   #4670d1;
+  --today-header-color:   #3657a4;
+  --today-border-color:   #3657a4;
   --sprint-color:         #4a4a95;
   --sprint-border-color:  #785ab3;
   --weekend-color:        #3d3a38;
@@ -78,6 +79,11 @@ body {
   --column-width:   17px;
 
   --sticky-against-row-headers-extra-padding: 3px;
+}
+
+sl-range {
+  --sl-color-primary-500: var(--today-header-color);
+  --sl-color-primary-600: var(--today-button-color);
 }
 
 .grid {
@@ -139,6 +145,7 @@ body {
 }
 
 .button {
+  border-radius: 4px;
   text-align: center;
   padding: 6px 0;
   cursor: pointer;

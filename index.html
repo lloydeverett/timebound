@@ -108,11 +108,11 @@
        <!-- let's also place some controls up top -->
       <div style="grid-row: 1 / 3; display: flex; flex-direction: column; justify-content: center;">
         <sl-range id="density-range" min="5" max="48" value="17" step="0.05" tooltip="none">
-          <span slot="label" style="font-size: 0.75rem;">Density</span>
+          <span slot="label" style="font-size: 0.7rem; padding-top: 2px;">Density</span>
         </sl-range>
       </div>
       <div style="grid-row: 3 / 5; display: flex; flex-direction: column; justify-content: center;">
-        <div id="jump-to-today-button" class="button" style="background: var(--today-color);">→ Today</div>
+        <div id="jump-to-today-button" class="button" style="background: var(--today-button-color);">→ Today</div>
       </div>
       <div style="grid-row: 5 / 7; display: flex; flex-direction: row; align-items: start; gap: 12px;">
         <select id="fromYear-select" style="flex: 1; text-align: center; border: none; background: #3b3b3b; border-radius: 4px; -webkit-appearance:none;" x-effect="fromYear; toYear; $nextTick(() => $('#fromYear-select').val('' + fromYear));">
@@ -146,7 +146,7 @@
     </div>
 
     <!-- highlight today's date -->
-    <div id="today-column-background" x-bind:style="`grid-column: ${clampedColumn(fromYear, toYear, todayDate)}; grid-row: 6 / -1; background: var(--today-color); border: 1px solid var(--today-border-color); border-top: none; z-index: 5;  border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;`"></div>
+    <div id="today-column-background" x-bind:style="`grid-column: ${clampedColumn(fromYear, toYear, todayDate)}; grid-row: 6 / -1; background: var(--today-color); border: 1px solid var(--today-border-color); border-top: none; z-index: 5;`"></div>
     <div x-bind:style="`grid-column: ${clampedColumn(fromYear, toYear, todayDate)}; grid-row: 4 / 6; background: var(--today-header-color); z-index: 5; border-top: none;`"></div>
 
     <!-- column at the end of the grid to hide overflows -->
