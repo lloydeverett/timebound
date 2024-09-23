@@ -12,6 +12,10 @@ sl-split-panel > * {
   height: 100%;
 }
 
+.row-header-section {
+  font-family: 'Inter', 'Inter Tight', 'Oxygen Mono', 'Courier', monospace;
+}
+
 body {
   height: 100%;
   font-family: 'Inter Tight', 'Oxygen Mono', 'Courier', monospace;
