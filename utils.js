@@ -54,8 +54,7 @@ function column(fromYear, year, month, day) {
         for (let m = 12; m > month; m--) {
             days += daysInMonth(year, m);
         }
-        days += daysInMonth(year, month);
-        days -= day;
+        days += daysInMonth(year, month) - day;
         return -days + 1;
     }
 }

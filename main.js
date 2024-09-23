@@ -35,8 +35,7 @@ $(document).on('alpine:init', function() {
       set toYear(value)   { this._toYear = value; },
       _fromYear: new Date().getFullYear() - 1,
       _toYear: new Date().getFullYear() + 1,
-      abbreviateSprints: false,
-      gridShown: true
+      abbreviateSprints: false
   });
 });
 
@@ -119,11 +118,10 @@ $(function() {
         Alpine.store('grid').fromYear = parseInt($('#fromYear-select').val());
         Alpine.store('grid').toYear = parseInt($('#toYear-select').val());
 
-        // toggling grid visibility when doing this seems to perform *much* better on Safari
-        Alpine.store('grid').gridShown = false;
-        Alpine.nextTick(function() {
-            Alpine.store('grid').gridShown = true;
-        });
+        // detach and reattach all the children of the grid
+        // no real rationale for doing this, it just seems to perform much better on Safari
+        const stuff = $('.grid > *').detach();
+        stuff.appendTo('.grid');
     }
     $('#fromYear-select').on('change', onYearsChanged);
     $('#toYear-select').on('change', onYearsChanged);

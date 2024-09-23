@@ -34,7 +34,6 @@
   get rowCount()          { return $store.grid.rowCount; },
   get fromYear()          { return $store.grid.fromYear; },
   get toYear()            { return $store.grid.toYear; },
-  get gridShown()         { return $store.grid.gridShown; },
   get abbreviateSprints() { return $store.grid.abbreviateSprints; },
   egSprintStart: [2024, 1, 1],
   egSprintIndex: 1,
@@ -44,7 +43,7 @@
 }">
   <sl-split-panel vertical position="75" snap="100%">
 
-  <div slot="start" id="grid" class="grid" x-bind:style="`grid-template-rows: repeat(${rowCount}, var(--row-height)) auto; display: ${gridShown ? 'grid' : 'none'};`">
+  <div slot="start" id="grid" class="grid" x-bind:style="`grid-template-rows: repeat(${rowCount}, var(--row-height)) auto;`">
 
     <!-- dummy div for measuring the width of the grid -->
     <div id="dummy-full-width-grid-row" x-bind:style="`grid-row: 1; grid-column: 1 / ${lastColumn + 1}`"></div>
