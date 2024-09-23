@@ -146,7 +146,8 @@
     </div>
 
     <!-- highlight today's date -->
-    <div id="today-column-background" x-bind:style="`grid-column: ${clampedColumn(fromYear, toYear, todayDate)}; grid-row: 6 / -1; background: var(--today-color); border: 1px solid var(--today-border-color); border-top: none; border-bottom: none; z-index: 5;`"></div>
+    <div id="today-column-background" x-bind:style="`grid-column: ${clampedColumn(fromYear, toYear, todayDate)}; grid-row: 6 / -1; background: var(--today-color); border: 1px solid var(--today-border-color); border-top: none; z-index: 5;  border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;`"></div>
+    <div x-bind:style="`grid-column: ${clampedColumn(fromYear, toYear, todayDate)}; grid-row: 4 / 6; background: var(--today-header-color); z-index: 5; border-top: none; border-top-left-radius: 6px; border-top-right-radius: 6px;`"></div>
 
     <!-- column at the end of the grid to hide overflows -->
     <div x-bind:style="`grid-column: ${column(fromYear, toYear, 12, 31) + 1}; grid-row: 1 / -1; background: rgb(50, 48, 47); z-index: 1000;`"></div>

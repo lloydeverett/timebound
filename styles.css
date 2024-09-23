@@ -67,10 +67,11 @@ body {
   --month-border-color:   #557ba0;
   --days-color:           #303952;
   --weekday-color:        #303952;
-  --today-color:          #008a8a;
-  --today-border-color:   #008a8a;
+  --today-color:          #3d6f50;
+  --today-header-color:   #375845;
+  --today-border-color:   #375845;
   --sprint-color:         #4a4a95;
-  --sprint-border-color:  #5a5ab3;
+  --sprint-border-color:  #785ab3;
   --weekend-color:        #3d3a38;
 
   --row-height:     24px;
