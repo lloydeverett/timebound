@@ -129,6 +129,10 @@ sl-range {
   z-index: 100;
 }
 
+.row-section-header {
+  font-weight: bold;
+}
+
 .row-header:not(.row-section-header) {
   padding-left: 32px;
 }
