@@ -95,16 +95,6 @@ function sprints(fromYear, toYear, egSprintStart, egSprintIndex, sprintLength) {
         mod = sprintLength;
     }
     let end = firstColumn + mod - 1;
-    /*
-    // ok, so the first sprint that starts in fromYear starts at Jan 1 + mod - 1
-    // unless mod == 1, in which case it starts at Jan 1
-    // let end;
-    // if (mod === 1) {
-    //     end = firstColumn + sprintLength - 1;
-    // } else {
-    //     end = firstColumn + mod - 2;
-    // }
-    */
     let start = firstColumn;
     let index = egSprintIndex - div;
 
