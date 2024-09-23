@@ -66,7 +66,8 @@ body {
   --days-color:     var(--gb-faded-blue);
   --weekday-color:  var(--gb-faded-blue);
   --today-color:    var(--gb-faded-aqua);
-  --weekend-color:  rgb(61, 58, 56);
+  --sprint-color:   #944575;
+  --weekend-color:  #3d3a38;
 
   --row-height:     24px;
   --column-width:   17px;
@@ -148,12 +149,20 @@ body {
   text-align: center;
   padding: 0;
   min-width: 17px;
-  margin-left: calc(-1 * max(17px - 100%, 0px) / 2); /* 17px might be wider than the column, i.e. 100% */
-                                                     /* compensate so text is centered despite overflow */
+  margin-left: calc(-1 * max(17px - 100%, 0px) / 2); /* center even when overflowing */
 }
 .day-column-header-container-first .day-column-header-text {
   margin-left: 0; /* let the first day of the month overflow off to the right if need be;
                      it looks better than centering for the first day of the month */
+}
+
+.first-sprint-header-text, .last-sprint-header-text {
+  min-width: 84px;
+  margin-left: calc(-1 * max(84px - 100%, 0px)); /* right align when overflowing */
+}
+.first-sprint-header-text.abbreviated, .last-sprint-header-text.abbreviated {
+  min-width: 17px;
+  margin-left: calc(-1 * max(17px - 100%, 0px)); /* right align when overflowing */
 }
 
 textarea {

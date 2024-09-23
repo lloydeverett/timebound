@@ -1,78 +1,25 @@
 'use strict';
 
-const firstDataRow = 7;
-const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-const monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-const weekdays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+// breakpoints w.r.t. column width based on density slider
+const abbreviateSprintsBreakpoint = /* <= */ 9 /* px */;
+const dayVisibilityBreakpoints = [
+    [/* <= */  7 /* px */,    ['5n + 2', '5n + 3', '5n + 4', '5n + 5']],
+    [/* <= */  9 /* px */,    ['4n + 1', '4n + 3', '4n + 4']],
+    [/* <= */ 12 /* px */,    ['3n + 1', '3n + 2']],
+    [/* <= */ 19 /* px */,    ['2n + 1']],
+];
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
+
 function base64ToString(base64) {
     const binString = atob(base64);
     return decoder.decode(Uint8Array.from(binString, (m) => m.codePointAt(0)));
 }
+
 function stringToBase64(str) {
     const binString = Array.from(encoder.encode(str), (byte) => String.fromCodePoint(byte)).join("");
     return btoa(binString);
-}
-
-function daysInMonth(year, month) {
-    // Month in JavaScript is 0-indexed (January is 0, February is 1, etc), but by using 0 as the day it will give us the last day of the prior
-    // month. So passing in 1 as the month number will return the last day of January, not February
-    return new Date(year, month, 0).getDate();
-}
-
-function daysInYear(year) {
-    return 337 + daysInMonth(year, 2);
-}
-
-function daysInYears(fromYear, toYear) {
-    let days = 0;
-    for (let y = fromYear; y <= toYear; y++) {
-        days += daysInYear(y);
-    }
-    return days;
-}
-
-function weekday(year, month, day) {
-    return weekdays[new Date(year, month - 1, day).getDay()];
-}
-
-function isWeekend(year, month, day) {
-    const date = new Date(year, month - 1, day).getDay();
-    return date === 0 || date === 6;
-}
-
-function column(startYear, year, month, day) {
-    let days = 0;
-    for (let y = startYear; y < year; y++) {
-        days += daysInYear(y);
-    }
-    for (let m = 1; m < month; m++) {
-        days += daysInMonth(year, m);
-    }
-    days += day;
-    return days + 1;
-}
-
-function todayColumn(fromYear, toYear) {
-    const today = new Date();
-    if (today.getFullYear() >= fromYear && today.getFullYear() <= toYear) {
-        return column(fromYear, today.getFullYear(), today.getMonth() + 1, today.getDate());
-    } else if (today.getFullYear() < fromYear) {
-        return 2;
-    } else {
-        return column(fromYear, toYear, 12, 31);
-    }
-}
-
-function range(start, end) {
-    const length = end - start + 1;
-    const result = Array(length);
-    for (let i = 0; i < length; i++) {
-        result[i] = start + i;
-    }
-    return result;
 }
 
 $(document).on('alpine:init', function() {
@@ -88,6 +35,7 @@ $(document).on('alpine:init', function() {
       set toYear(value)   { this._toYear = value; },
       _fromYear: new Date().getFullYear() - 1,
       _toYear: new Date().getFullYear() + 1,
+      abbreviateSprints: false,
       gridShown: true
   });
 });
@@ -132,12 +80,6 @@ $(function() {
         const oldScrollLeft = $('.grid')[0].scrollLeft;
         const oldGridWidth = $('#dummy-full-width-grid-row').width();
 
-        const dayVisibilityBreakpoints = [
-            [/* <= */  7 /* px */,    ['5n + 2', '5n + 3', '5n + 4', '5n + 5']],
-            [/* <= */  9 /* px */,    ['4n + 1', '4n + 3', '4n + 4']],
-            [/* <= */ 12 /* px */,    ['3n + 1', '3n + 2']],
-            [/* <= */ 19 /* px */,    ['2n + 1']],
-        ];
         let rules = null;
         for (let i = 0; i < dayVisibilityBreakpoints.length; i++) {
             const [breakpoint, breakpointRules] = dayVisibilityBreakpoints[i];
@@ -164,6 +106,8 @@ $(function() {
         const pos = (oldScrollLeft + ($(window).width() / 2)) / oldGridWidth;
         const newGridWidth = $('#dummy-full-width-grid-row').width();
         $('.grid')[0].scrollLeft = (pos * newGridWidth) - ($(window).width() / 2);
+
+        Alpine.store('grid').abbreviateSprints = columnWidth <= abbreviateSprintsBreakpoint;
     }
     $('#density-range').on('input', function() {
         updateDensityStyles();
