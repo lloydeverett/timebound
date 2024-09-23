@@ -88,10 +88,10 @@ function sprints(fromYear, toYear, egSprintStart, egSprintIndex, sprintLength) {
 
     // find the sprint overlapping fromYear Jan 1
     let div = Math.trunc((egEndColumn - firstColumn + 1) / sprintLength);
-    let mod = (egEndColumn + (10000 * sprintLength) - firstColumn + 1) % sprintLength;
-    console.log(mod);
-    if (mod === 0) {
-        mod = sprintLength;
+    let mod = (egEndColumn - firstColumn + 1) % sprintLength;
+    if (mod <= 0) {
+        div--;
+        mod += sprintLength;
     }
     let end = firstColumn + mod - 1;
     let start = firstColumn;
