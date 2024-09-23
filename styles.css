@@ -73,6 +73,8 @@ body {
 
   --row-height:     24px;
   --column-width:   17px;
+
+  --sticky-against-row-headers-extra-padding: 3px;
 }
 
 .grid {

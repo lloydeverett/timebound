@@ -45,7 +45,7 @@ $(function() {
         $('#grid-headers-dynamic-styles').html(`
             .sticky-against-row-headers {
                 position: sticky;
-                left: ${$('#row-headers-bg').outerWidth()}px;
+                left: calc(${$('#row-headers-bg').outerWidth()}px + var(--sticky-against-row-headers-extra-padding));
             }
         `);
     }
