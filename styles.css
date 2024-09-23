@@ -14,7 +14,7 @@ sl-split-panel > * {
 
 body {
   height: 100%;
-  font-family: 'Oxygen Mono', 'Courier', monospace;
+  font-family: 'Inter Tight', 'Oxygen Mono', 'Courier', monospace;
   font-size: 0.9rem;
   background: #32302f;
   color: white;
