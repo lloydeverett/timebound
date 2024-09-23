@@ -23,6 +23,9 @@ function stringToBase64(str) {
 }
 
 $(document).on('alpine:init', function() {
+  const today = new Date();
+  const weAreHalfwayThroughTheYear = today.getMonth() + 1 >= 6;
+  const thisYear = today.getFullYear();
   Alpine.store('grid', {
       sections: [ ],
       rowCount: firstDataRow,
@@ -33,8 +36,8 @@ $(document).on('alpine:init', function() {
       get toYear()   { this._fromYear; return this._toYear;   },
       set fromYear(value) { this._fromYear = value; },
       set toYear(value)   { this._toYear = value; },
-      _fromYear: new Date().getFullYear() - 1,
-      _toYear: new Date().getFullYear() + 1,
+      _fromYear: weAreHalfwayThroughTheYear ? thisYear : thisYear - 1,
+      _toYear: weAreHalfwayThroughTheYear ? thisYear + 1 : thisYear,
       abbreviateSprints: false
   });
 });
