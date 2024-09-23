@@ -63,7 +63,7 @@
                       <span class="sticky-against-row-headers" x-text="monthNames[month - 1]"></span>
                     </div>
                     <!-- border for each month -->
-                    <div x-bind:style="`z-index: 100; grid-column: ${column(fromYear, year, month, 1)}; grid-row: 4 / -1; ${yearIndex === 0 && month === 1 ? '' : 'border-left: 1px solid var(--month-color);'}`"></div>
+                    <div x-bind:style="`z-index: 100; grid-column: ${column(fromYear, year, month, 1)}; grid-row: 4 / -1; ${yearIndex === 0 && month === 1 ? '' : 'border-left: 1px solid var(--month-border-color);'}`"></div>
                     <!-- row backgrounds for day columns -->
                     <div x-bind:style="`grid-row: 4; grid-column: ${column(fromYear, year, month, 1)} / ${column(fromYear, year, month, daysInMonth(year, month)) + 1}; background: var(--days-color);`"></div>
                     <div x-bind:style="`grid-row: 5; grid-column: ${column(fromYear, year, month, 1)} / ${column(fromYear, year, month, daysInMonth(year, month)) + 1}; background: var(--weekday-color);`"></div>
@@ -97,7 +97,7 @@
           <span x-bind:class="`sprint-header-text ${abbreviateSprints ? 'abbreviated' : ''} ${sprint.start === 2 ? 'first-sprint-header-text' : ''} ${sprint.end === lastColumn ? 'last-sprint-header-text' : ''} sticky-against-row-headers`" x-text="(abbreviateSprints ? '' : 'Sprint ') + sprint.index"></span>
         </div>
         <!-- border -->
-        <div x-bind:style="`z-index: 50; grid-column: ${sprint.start} / ${sprint.end + 1}; grid-row: 6 / -1; ${sprintIndex === 0 ? '' : 'border-left: 1px solid var(--sprint-color);'}`"></div>
+        <div x-bind:style="`z-index: 50; grid-column: ${sprint.start} / ${sprint.end + 1}; grid-row: 6 / -1; ${sprintIndex === 0 ? '' : 'border-left: 1px solid var(--sprint-border-color);'}`"></div>
       </div>
     </template>
 

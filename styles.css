@@ -62,14 +62,16 @@ body {
   --gb-faded-aqua:     #427b58;
   --gb-faded-orange:   #af3a03;
 
-  --years-color:           var(--gb-neutral-blue);
-  --month-color:           var(--gb-neutral-blue);
-  --days-color:            var(--gb-faded-blue);
-  --weekday-color:         var(--gb-faded-blue);
-  --today-color:           var(--gb-faded-aqua);
-  --today-border-color:    var(--gb-faded-aqua);
-  --sprint-color:          #944575;
-  --weekend-color:         #3d3a38;
+  --years-color:          #2c3e50;
+  --month-color:          #2c3e50;
+  --month-border-color:   #557ba0;
+  --days-color:           #303952;
+  --weekday-color:        #303952;
+  --today-color:          #008a8a;
+  --today-border-color:   #008a8a;
+  --sprint-color:         #4a4a95;
+  --sprint-border-color:  #5a5ab3;
+  --weekend-color:        #3d3a38;
 
   --row-height:     24px;
   --column-width:   17px;
