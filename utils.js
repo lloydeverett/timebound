@@ -93,8 +93,8 @@ function sprints(fromYear, toYear, egSprintStart, egSprintIndex, sprintLength) {
         div--;
         mod += sprintLength;
     }
-    let end = firstColumn + mod - 1;
     let start = firstColumn;
+    let end = firstColumn + mod - 1;
     let index = egSprintIndex - div;
 
     // loop from there
