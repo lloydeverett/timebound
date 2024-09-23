@@ -6,7 +6,7 @@ const dayVisibilityBreakpoints = [
     [/* <= */  7 /* px */,    ['5n + 2', '5n + 3', '5n + 4', '5n + 5']],
     [/* <= */  9 /* px */,    ['4n + 1', '4n + 3', '4n + 4']],
     [/* <= */ 12 /* px */,    ['3n + 1', '3n + 2']],
-    [/* <= */ 19 /* px */,    ['2n + 1']],
+    [/* <= */ 20 /* px */,    ['2n + 1']],
 ];
 
 const encoder = new TextEncoder();

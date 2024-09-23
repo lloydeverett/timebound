@@ -18,6 +18,7 @@ body {
   font-size: 0.9rem;
   background: #32302f;
   color: white;
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 
@@ -61,13 +62,14 @@ body {
   --gb-faded-aqua:     #427b58;
   --gb-faded-orange:   #af3a03;
 
-  --years-color:    var(--gb-neutral-blue);
-  --month-color:    var(--gb-neutral-blue);
-  --days-color:     var(--gb-faded-blue);
-  --weekday-color:  var(--gb-faded-blue);
-  --today-color:    var(--gb-faded-aqua);
-  --sprint-color:   #944575;
-  --weekend-color:  #3d3a38;
+  --years-color:           var(--gb-neutral-blue);
+  --month-color:           var(--gb-neutral-blue);
+  --days-color:            var(--gb-faded-blue);
+  --weekday-color:         var(--gb-faded-blue);
+  --today-color:           var(--gb-faded-aqua);
+  --today-border-color:    var(--gb-faded-aqua);
+  --sprint-color:          #944575;
+  --weekend-color:         #3d3a38;
 
   --row-height:     24px;
   --column-width:   17px;

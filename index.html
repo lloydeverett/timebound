@@ -36,8 +36,8 @@
   get toYear()            { return $store.grid.toYear; },
   get gridShown()         { return $store.grid.gridShown; },
   get abbreviateSprints() { return $store.grid.abbreviateSprints; },
-  egSprintStart: [2024, 9, 25],
-  egSprintIndex: 40,
+  egSprintStart: [2024, 1, 1],
+  egSprintIndex: 1,
   sprintLength: 14,
   todayDate: new Date(),
   get lastColumn() { return column(this.fromYear, this.toYear, 12, 31); }
@@ -72,11 +72,11 @@
                     <template x-for="day in range(1, daysInMonth(year, month))">
                       <div x-bind:class="`day-column-header-container ${day === 1 ? 'day-column-header-container-first' : ''}`" style="display: contents;">
                         <!-- date -->
-                        <div x-bind:style="`grid-column: ${column(fromYear, year, month, day)}; grid-row: 4;`">
+                        <div x-bind:style="`grid-column: ${column(fromYear, year, month, day)}; grid-row: 4; z-index: 50;`">
                           <div class="day-column-header-text" x-text="day"></div>
                         </div>
                         <!-- day of week -->
-                        <div x-bind:style="`grid-column: ${column(fromYear, year, month, day)}; grid-row: 5;`">
+                        <div x-bind:style="`grid-column: ${column(fromYear, year, month, day)}; grid-row: 5; z-index: 50;`">
                           <div class="day-column-header-text" x-text="weekday(year, month, day)[0]"></div>
                         </div>
                         <!-- background for weekends -->
@@ -147,7 +147,7 @@
     </div>
 
     <!-- highlight today's date -->
-    <div id="today-column-background" x-bind:style="`grid-column: ${clampedColumn(fromYear, toYear, todayDate)}; grid-row: 6 / -1; background: var(--today-color); z-index: 5;`"></div>
+    <div id="today-column-background" x-bind:style="`grid-column: ${clampedColumn(fromYear, toYear, todayDate)}; grid-row: 6 / -1; background: var(--today-color); border: 1px solid var(--today-border-color); border-top: none; border-bottom: none; z-index: 5;`"></div>
 
     <!-- column at the end of the grid to hide overflows -->
     <div x-bind:style="`grid-column: ${column(fromYear, toYear, 12, 31) + 1}; grid-row: 1 / -1; background: rgb(50, 48, 47); z-index: 1000;`"></div>

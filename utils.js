@@ -38,14 +38,26 @@ function isWeekend(year, month, day) {
 
 function column(fromYear, year, month, day) {
     let days = 0;
-    for (let y = fromYear; y < year; y++) {
-        days += daysInYear(y);
+    if (fromYear <= year) {
+        for (let y = fromYear; y < year; y++) {
+            days += daysInYear(y);
+        }
+        for (let m = 1; m < month; m++) {
+            days += daysInMonth(year, m);
+        }
+        days += day;
+        return days + 1;
+    } else {
+        for (let y = year + 1; y < fromYear; y++) {
+            days += daysInYear(y);
+        }
+        for (let m = 12; m > month; m--) {
+            days += daysInMonth(year, m);
+        }
+        days += daysInMonth(year, month);
+        days -= day;
+        return -days + 1;
     }
-    for (let m = 1; m < month; m++) {
-        days += daysInMonth(year, m);
-    }
-    days += day;
-    return days + 1;
 }
 
 function clampedColumn(fromYear, toYear, dateValue) {
@@ -68,28 +80,40 @@ function range(start, end) {
 }
 
 function sprints(fromYear, toYear, egSprintStart, egSprintIndex, sprintLength) {
+    // console.log('BEGIN');
+    // for (let d = new Date(); d > new Date(2023, 0, 1); d.setDate(d.getDate() - 1)) {
+    //     console.log(column(fromYear, d.getFullYear(), d.getMonth() + 1, d.getDate()));
+    // }
+    // console.log('END');
+
     const firstColumn = column(fromYear, fromYear, 1, 1);
     const lastColumn = column(fromYear, toYear, 12, 31);
-    const egColumn = column(fromYear, egSprintStart[0], egSprintStart[1], egSprintStart[2]);
+    const egStartColumn = column(fromYear, egSprintStart[0], egSprintStart[1], egSprintStart[2]);
+    const egEndColumn = egStartColumn + sprintLength - 1;
 
     let results = []
-    let index;
-    let start;
-    let end;
 
-    for (index = egSprintIndex, start = egColumn, end = start + sprintLength - 1;
+    // find the sprint overlapping fromYear Jan 1
+    let div = Math.trunc((egEndColumn - firstColumn + 1) / sprintLength);
+    let mod = (egStartColumn + (10000 * sprintLength) - firstColumn + 1) % sprintLength;
+    // ok, so the first sprint that starts in fromYear starts at Jan 1 + mod - 1
+    // unless mod == 1, in which case it starts at Jan 1
+    let end;
+    if (mod === 1) {
+        end = firstColumn + sprintLength - 1;
+    } else {
+        end = firstColumn + mod - 2;
+    }
+    let start = firstColumn;
+    let index = egSprintIndex - div;
+
+    // loop from there
+    for (;
          end < lastColumn;
-         start += sprintLength, end += sprintLength, index++) {
+         start = end + 1, end += sprintLength, index++) {
         results.push({ start: start, end: end, index: index });
     }
     results.push({ start: start, end: lastColumn, index: index });
-
-    for (index = egSprintIndex - 1, end = egColumn - 1, start = end - sprintLength + 1;
-         start > firstColumn;
-         start -= sprintLength, end -= sprintLength, index--) {
-        results.unshift({ start: start, end: end, index: index });
-    }
-    results.unshift({ start: firstColumn, end: end, index: index });
 
     return results;
 }
