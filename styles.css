@@ -69,6 +69,7 @@ body {
   --weekday-color:        #303952;
   --today-color:          #3e64bd;
   --today-button-color:   #4670d1;
+  --today-slider-color:   #4b79e5;
   --today-header-color:   #3657a4;
   --today-border-color:   #3657a4;
   --sprint-color:         #4a4a95;
@@ -83,7 +84,7 @@ body {
 
 sl-range {
   --sl-color-primary-500: var(--today-header-color);
-  --sl-color-primary-600: var(--today-button-color);
+  --sl-color-primary-600: var(--today-slider-color);
 }
 
 .grid {
