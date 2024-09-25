@@ -89,7 +89,7 @@ $(function() {
             // favour the value we set
             gridScrollLeft = $('.grid')[0].scrollLeft;
         }
-        lastGridScrollLeftSampleMs = +new Date();
+        lastGridScrollLeftSampleMs = nowMs;
 
         let rules = null;
         for (let i = 0; i < dayVisibilityBreakpoints.length; i++) {
