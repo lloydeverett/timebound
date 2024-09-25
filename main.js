@@ -196,7 +196,8 @@ $(function() {
                   col: objEntry.col === -1 ? -1 : [Number(objEntry.col[0]), Number(objEntry.col[1]), Number(objEntry.col[2])],
                   toRow: 'toRow' in objEntry ? (objEntry.toRow === -1 ? -1 : Number(objEntry.toRow)) : null,
                   toCol: 'toCol' in objEntry ? (objEntry.toCol === -1 ? -1 : [Number(objEntry.toCol[0]), Number(objEntry.toCol[1]), Number(objEntry.toCol[2])]) : null,
-                  color: 'color' in objEntry ? String(objEntry.color) : null,
+                  bg: 'bg' in objEntry ? String(objEntry.bg) : null,
+                  style: 'style' in objEntry ? String(objEntry.style) : null,
                   text: String(objEntry.text)
                 });
             }
