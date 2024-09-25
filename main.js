@@ -200,13 +200,19 @@ $(function() {
     });
     renderData();
 
+    let animating = false;
     function scrollToToday() {
+        if (animating) { return; }
+
         const animationDurationMs = 700;
         const todayOffset = $('#today-column-background').position().left + ($('#density-range')[0].value / 2);
 
+        animating = true;
         $('.grid').animate({
             scrollLeft: $('.grid')[0].scrollLeft + todayOffset - ($(window).width() - $('#row-headers-bg').outerWidth()) / 2 - $('#row-headers-bg').outerWidth()
-        }, animationDurationMs);
+        }, animationDurationMs, 'swing', function() {
+            animating = false;
+        });
     }
     $('#jump-to-today-button').on('click', scrollToToday);
     scrollToToday();
