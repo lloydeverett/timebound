@@ -84,9 +84,9 @@ $(function() {
         const columnWidth = $('#density-range')[0].value;
 
         const nowMs = +new Date();
+        // re-sampling the scroll left value introduces rounding errors, so if we just set the value,
+        // favour the value we set
         if (nowMs - lastGridScrollLeftSampleMs > 70) {
-            // re-sampling the scroll left value introduces rounding errors, so if we just set the value,
-            // favour the value we set
             gridScrollLeft = $('.grid')[0].scrollLeft;
         }
         lastGridScrollLeftSampleMs = nowMs;
