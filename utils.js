@@ -107,3 +107,22 @@ function sprints(fromYear, toYear, egSprintStart, egSprintIndex, sprintLength) {
 
     return results;
 }
+
+function readUserSpecifiedStartColumn(fromYear, toYear, col) {
+    if (col === -1) { return column(fromYear, fromYear, 1, 1); }
+    return column(fromYear, col[0], col[1], col[2]);
+}
+
+function readUserSpecifiedEndColumn(fromYear, toYear, col) {
+    if (col === -1) { return column(fromYear, toYear, 12, 31) + 1; }
+    return column(fromYear, col[0], col[1], col[2] + 1)
+}
+
+function readUserSpecifiedStartRow(firstDataRow, rowCount, row) {
+    return firstDataRow + row - 1;
+}
+
+function readUserSpecifiedEndRow(firstDataRow, rowCount, row) {
+    if (row === -1) { return rowCount + 2; }
+    return firstDataRow + row;
+}

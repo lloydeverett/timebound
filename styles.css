@@ -12,8 +12,13 @@ sl-split-panel > * {
   height: 100%;
 }
 
-.row-header-section {
+.row-header-section, .entries-section {
+  font-weight: 500;
   font-family: 'Inter', 'Inter Tight', 'Oxygen Mono', 'Courier', monospace;
+}
+
+.row-section-header {
+  font-weight: 700;
 }
 
 body {
@@ -80,8 +85,9 @@ body {
   --sprint-border-color:  #785ab3;
   --weekend-color:        #3d3a38;
 
-  --row-height:     24px;
-  --column-width:   17px;
+  --header-row-height:  24px;
+  --row-height:         32px;
+  --column-width:       17px;
 
   --sticky-against-row-headers-extra-padding: 3px;
 }
@@ -126,11 +132,7 @@ sl-range {
   left: 0;
   padding-left: 16px;
   padding-right: 20px;
-  z-index: 100;
-}
-
-.row-section-header {
-  font-weight: bold;
+  z-index: 1000;
 }
 
 .row-header:not(.row-section-header) {

@@ -27,8 +27,12 @@ $(document).on('alpine:init', function() {
   const weAreHalfwayThroughTheYear = today.getMonth() + 1 >= 6;
   const thisYear = today.getFullYear();
   Alpine.store('grid', {
-      sections: [ ],
+      firstDataRow: firstDataRow,
       rowCount: firstDataRow,
+      sections: [],
+      entries: [],
+      egSprintStart: [2024, 1, 1],
+      egSprintIndex: 1,
       // reactivity isn't quite smart enough to always do the right thing here, so here's a
       // hacky trick to make sure that anything that depends on fromYear also depends on toYear
       // and vice versa
@@ -176,19 +180,49 @@ $(function() {
           if ('title' in obj) {
             title = String(obj.title);
           }
+
+          let egSprintStart = null;
+          let egSprintIndex = null;
+          if ('sprints' in obj) {
+            egSprintStart = [Number(obj.sprints.egSprintStart[0]), Number(obj.sprints.egSprintStart[1]), Number(obj.sprints.egSprintStart[2])];
+            egSprintIndex = Number(obj.sprints.egSprintIndex);
+          }
+
+          let entries = []
+          if ('entries' in obj) {
+            for (const objEntry of obj.entries) {
+                entries.push({
+                  row: Number(objEntry.row),
+                  col: objEntry.col === -1 ? -1 : [Number(objEntry.col[0]), Number(objEntry.col[1]), Number(objEntry.col[2])],
+                  toRow: 'toRow' in objEntry ? (objEntry.toRow === -1 ? -1 : Number(objEntry.toRow)) : null,
+                  toCol: 'toCol' in objEntry ? (objEntry.toCol === -1 ? -1 : [Number(objEntry.toCol[0]), Number(objEntry.toCol[1]), Number(objEntry.toCol[2])]) : null,
+                  color: 'color' in objEntry ? String(objEntry.color) : null,
+                  text: String(objEntry.text)
+                });
+            }
+          }
           result = {
             sections: sections,
+            entries: entries,
             rowCount: row - 1,
-            title: title
+            title: title,
+            egSprintStart: egSprintStart,
+            egSprintIndex: egSprintIndex
           };
         } catch (err) {
-          console.info(err);
+          console.info('Error while processing input:', err);
           $('#textarea').toggleClass('data-invalid', true);
           return;
         }
         $('#textarea').toggleClass('data-invalid', false);
-        Alpine.store('grid').sections = result.sections;
-        Alpine.store('grid').rowCount = result.rowCount;
+        const store = Alpine.store('grid');
+        if (result.egSprintStart !== null && result.egSprintIndex !== null) {
+            store.egSprintStart = result.egSprintStart;
+            store.egSprintIndex = result.egSprintIndex;
+        }
+        store.sections = result.sections;
+        store.rowCount = result.rowCount;
+        store.entries = result.entries;
         if (result.title) {
             document.title = result.title + ' - datum';
         }
