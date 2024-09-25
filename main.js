@@ -201,10 +201,12 @@ $(function() {
     renderData();
 
     function scrollToToday() {
+        const animationDurationMs = 700;
         const todayOffset = $('#today-column-background').position().left + ($('#density-range')[0].value / 2);
+
         $('.grid').animate({
             scrollLeft: $('.grid')[0].scrollLeft + todayOffset - ($(window).width() - $('#row-headers-bg').outerWidth()) / 2 - $('#row-headers-bg').outerWidth()
-        }, 700);
+        }, animationDurationMs);
     }
     $('#jump-to-today-button').on('click', scrollToToday);
     scrollToToday();
