@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * define stateless helper functions defined before the first render
+ * stateless helper functions defined before the first render
 */
 
 const firstDataRow = 7;
@@ -109,20 +109,22 @@ function sprints(fromYear, toYear, egSprintStart, egSprintIndex, sprintLength) {
 }
 
 function readUserSpecifiedStartColumn(fromYear, toYear, col) {
-    if (col === -1) { return column(fromYear, fromYear, 1, 1); }
-    return column(fromYear, col[0], col[1], col[2]);
+    if (col === '-1') { return column(fromYear, fromYear, 1, 1); }
+    const date = new Date(col);
+    return column(fromYear, date.getFullYear(), date.getMonth() + 1, date.getDate());
 }
 
 function readUserSpecifiedEndColumn(fromYear, toYear, col) {
-    if (col === -1) { return column(fromYear, toYear, 12, 31) + 1; }
-    return column(fromYear, col[0], col[1], col[2] + 1)
+    if (col === '-1') { return column(fromYear, toYear, 12, 31) + 1; }
+    const date = new Date(col);
+    return column(fromYear, date.getFullYear(), date.getMonth() + 1, date.getDate()) + 1;
 }
 
 function readUserSpecifiedStartRow(firstDataRow, rowCount, row) {
-    return firstDataRow + row - 1;
+    return firstDataRow + Number(row) - 1;
 }
 
 function readUserSpecifiedEndRow(firstDataRow, rowCount, row) {
-    if (row === -1) { return rowCount + 2; }
-    return firstDataRow + row;
+    if (row === '-1') { return rowCount + 2; }
+    return firstDataRow + Number(row);
 }
