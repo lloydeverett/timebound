@@ -77,10 +77,19 @@ $(function() {
         }
     }
 
+    let gridScrollLeft = $('.grid')[0].scrollLeft;
+    let lastGridScrollLeftSampleMs = +new Date();
     function updateDensityStyles() {
-        const columnWidth = $('#density-range')[0].value;
-        const oldScrollLeft = $('.grid')[0].scrollLeft;
         const oldGridWidth = $('#dummy-full-width-grid-row').width();
+        const columnWidth = $('#density-range')[0].value;
+
+        const nowMs = +new Date();
+        if (nowMs - lastGridScrollLeftSampleMs > 70) {
+            // re-sampling the scroll left value introduces rounding errors, so if we just set the value,
+            // favour the value we set
+            gridScrollLeft = $('.grid')[0].scrollLeft;
+        }
+        lastGridScrollLeftSampleMs = +new Date();
 
         let rules = null;
         for (let i = 0; i < dayVisibilityBreakpoints.length; i++) {
@@ -105,9 +114,10 @@ $(function() {
         }
         $('#density-dynamic-styles').html(html);
 
-        const pos = (oldScrollLeft + ($(window).width() / 2)) / oldGridWidth;
+        const pos = (gridScrollLeft + ($(window).width() / 2)) / oldGridWidth;
         const newGridWidth = $('#dummy-full-width-grid-row').width();
-        $('.grid')[0].scrollLeft = (pos * newGridWidth) - ($(window).width() / 2);
+        gridScrollLeft = (pos * newGridWidth) - ($(window).width() / 2);
+        $('.grid')[0].scrollLeft = gridScrollLeft;
 
         Alpine.store('grid').abbreviateSprints = columnWidth <= abbreviateSprintsBreakpoint;
     }
@@ -191,8 +201,9 @@ $(function() {
     renderData();
 
     function scrollToToday() {
+        const todayOffset = $('#today-column-background').position().left + ($('#density-range')[0].value / 2);
         $('.grid').animate({
-            scrollLeft: $('.grid')[0].scrollLeft + $('#today-column-background').position().left - ($(window).width()) / 2  - $('#row-headers-bg').outerWidth() / 2
+            scrollLeft: $('.grid')[0].scrollLeft + todayOffset - ($(window).width() - $('#row-headers-bg').outerWidth()) / 2 - $('#row-headers-bg').outerWidth()
         }, 700);
     }
     $('#jump-to-today-button').on('click', scrollToToday);
