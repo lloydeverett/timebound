@@ -111,15 +111,27 @@ function sprints(fromYear, toYear, egSprintStart, egSprintIndex, sprintLength) {
 function resolveRowRef(sections, ref) {
     for (const section of sections) {
         if (section.id === ref && section.items.length > 0) {
-            return section.items[0].index;
+            return section.items[0];
         }
         for (const item of section.items) {
             if (item.id === ref) {
-                return item.index;
+                return item;
             }
         }
     }
     return null;
+}
+
+function includesOfEntry(sections, entry) {
+    let results = [];
+    for (const section of sections) {
+        for (const item of section.items) {
+            if (item.includeTags.some(t1 => entry.tags.some(t2 => t1 === t2))) {
+                results.push(item);
+            }
+        }
+    }
+    return results;
 }
 
 function readUserSpecifiedStartColumn(fromYear, toYear, col) {
@@ -135,12 +147,41 @@ function readUserSpecifiedEndColumn(fromYear, toYear, col) {
 }
 
 function readUserSpecifiedStartRow(sections, firstDataRow, rowCount, row) {
-    if (row.match(/^[A-Za-z]/)) { return resolveRowRef(sections, row); }
+    if (row.match(/^[A-Za-z]/)) {
+        const resolvedItem = resolveRowRef(sections, row);
+        if (resolvedItem !== null) {
+            return resolveRowRef(sections, row).index;
+        }
+    }
+    if (isNaN(Number(row))) {
+        return firstDataRow - 1;
+    }
     return firstDataRow + Number(row) - 1;
 }
 
 function readUserSpecifiedEndRow(sections, firstDataRow, rowCount, row) {
     if (row === '-1') { return rowCount + 2; }
-    if (row.match(/^[A-Za-z]/)) { return resolveRowRef(sections, row) + 1; }
+    if (row.match(/^[A-Za-z]/)) {
+        const resolvedItem = resolveRowRef(sections, row);
+        if (resolvedItem !== null) {
+            return resolveRowRef(sections, row).index + 1;
+        }
+    }
+    if (isNaN(Number(row))) {
+        return firstDataRow - 1;
+    }
     return firstDataRow + Number(row);
+}
+
+function expandDefaults(sections, entry) {
+    if (!entry.row.match(/^[A-Za-z]/)) {
+        return entry;
+    }
+    const resolvedItem = resolveRowRef(sections, entry.row);
+    if (resolvedItem === null || resolvedItem.defaults === null) {
+        return entry;
+    }
+    // todo: this doesn't work, because entry will have the values set to null
+    //       so we can't just use '...'
+    return { ...(resolvedItem.defaults), ...entry };
 }

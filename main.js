@@ -163,11 +163,12 @@ $(function() {
                 const item = {
                     id: String(objItem.id),
                     text: String(objItem.text),
+                    header: 'header' in objItem ? !!objItem.header : null,
+                    includeTags: 'includeTags' in objItem ? objItem.includeTags.split(' ').filter(s => s.length > 0) : [],
+                    // todo: obviously not right
+                    defaults: { bg: 'fl-carrot' },
                     index: row++
                 };
-                if ('header' in objItem) {
-                    item.header = !!objItem.header;
-                }
                 items.push(item);
             }
             sections.push({
@@ -175,10 +176,8 @@ $(function() {
                 items: items
             });
           }
-          let title = null;
-          if ('title' in obj) {
-            title = String(obj.title);
-          }
+
+          const title = 'title' in obj ? String(obj.title) : null;
 
           let egSprintStart = null;
           let egSprintIndex = null;
@@ -197,6 +196,7 @@ $(function() {
                   toCol: (Array.isArray(objEntry.col) && objEntry.col.length >= 2) ? String(objEntry.col[1]) : null,
                   bg: 'bg' in objEntry ? String(objEntry.bg) : null,
                   style: 'style' in objEntry ? String(objEntry.style) : null,
+                  tags: 'tags' in objEntry ? (String(objEntry.tags).split(' ').filter(s => s.length > 0)) : [],
                   text: String(objEntry.text)
                 });
             }
