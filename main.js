@@ -170,7 +170,6 @@ $(function() {
                 }
                 items.push(item);
             }
-            items[0]; // there should be at least one element, otherwise fail
             sections.push({
                 id: String(objSection.id),
                 items: items
@@ -192,10 +191,10 @@ $(function() {
           if ('entries' in obj) {
             for (const objEntry of obj.entries) {
                 entries.push({
-                  row: String(objEntry.row),
-                  col: String(objEntry.col),
-                  toRow: 'toRow' in objEntry ? String(objEntry.toRow) : null,
-                  toCol: 'toCol' in objEntry ? String(objEntry.toCol) : null,
+                  row: (Array.isArray(objEntry.row) && objEntry.row.length >= 1) ? String(objEntry.row[0]) : String(objEntry.row),
+                  col: (Array.isArray(objEntry.col) && objEntry.col.length >= 1) ? String(objEntry.col[0]) : String(objEntry.col),
+                  toRow: (Array.isArray(objEntry.row) && objEntry.row.length >= 2) ? String(objEntry.row[1]) : null,
+                  toCol: (Array.isArray(objEntry.col) && objEntry.col.length >= 2) ? String(objEntry.col[1]) : null,
                   bg: 'bg' in objEntry ? String(objEntry.bg) : null,
                   style: 'style' in objEntry ? String(objEntry.style) : null,
                   text: String(objEntry.text)
@@ -221,9 +220,12 @@ $(function() {
             store.egSprintStart = result.egSprintStart;
             store.egSprintIndex = result.egSprintIndex;
         }
+
+        // nb: order we set these is important; beware reactivity bugs
+        store.entries = result.entries;
         store.sections = result.sections;
         store.rowCount = result.rowCount;
-        store.entries = result.entries;
+
         if (result.title) {
             document.title = result.title + ' - datum';
         }

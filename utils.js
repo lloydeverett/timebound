@@ -108,6 +108,20 @@ function sprints(fromYear, toYear, egSprintStart, egSprintIndex, sprintLength) {
     return results;
 }
 
+function resolveRowRef(sections, ref) {
+    for (const section of sections) {
+        if (section.id === ref && section.items.length > 0) {
+            return section.items[0].index;
+        }
+        for (const item of section.items) {
+            if (item.id === ref) {
+                return item.index;
+            }
+        }
+    }
+    return null;
+}
+
 function readUserSpecifiedStartColumn(fromYear, toYear, col) {
     if (col === '-1') { return column(fromYear, fromYear, 1, 1); }
     const date = new Date(col);
@@ -120,11 +134,13 @@ function readUserSpecifiedEndColumn(fromYear, toYear, col) {
     return column(fromYear, date.getFullYear(), date.getMonth() + 1, date.getDate()) + 1;
 }
 
-function readUserSpecifiedStartRow(firstDataRow, rowCount, row) {
+function readUserSpecifiedStartRow(sections, firstDataRow, rowCount, row) {
+    if (row.match(/^[A-Za-z]/)) { return resolveRowRef(sections, row); }
     return firstDataRow + Number(row) - 1;
 }
 
-function readUserSpecifiedEndRow(firstDataRow, rowCount, row) {
+function readUserSpecifiedEndRow(sections, firstDataRow, rowCount, row) {
     if (row === '-1') { return rowCount + 2; }
+    if (row.match(/^[A-Za-z]/)) { return resolveRowRef(sections, row) + 1; }
     return firstDataRow + Number(row);
 }

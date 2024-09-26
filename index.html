@@ -163,7 +163,7 @@
     <!-- plot entries -->
     <div class="entries-section" style="display: contents;">
       <template x-for="(entry, entryIndex) in entries">
-        <div x-bind:style="`display: flex; flex-direction: row; align-items: center; padding: 0 6px; grid-row: ${readUserSpecifiedStartRow(firstDataRow, rowCount, entry.row)}${entry.toRow === null ? '' : ' / ' + readUserSpecifiedEndRow(firstDataRow, rowCount, entry.toRow)}; grid-column: ${readUserSpecifiedStartColumn(fromYear, toYear, entry.col)}${entry.toCol === null ? '' : ' / ' + readUserSpecifiedEndColumn(fromYear, toYear, entry.toCol)}; border-radius: 8px; background: var(--${entry.bg !== null ? entry.bg : 'fl-belize-hole'}); border: 1px solid #00000020; z-index: ${100 + entryIndex}; ${entry.style !== null ? entry.style : ''}`">
+        <div x-bind:style="`display: flex; flex-direction: row; align-items: center; padding: 0 6px; grid-row: ${readUserSpecifiedStartRow(sections, firstDataRow, rowCount, entry.row)}${entry.toRow === null ? '' : ' / ' + readUserSpecifiedEndRow(sections, firstDataRow, rowCount, entry.toRow)}; grid-column: ${readUserSpecifiedStartColumn(fromYear, toYear, entry.col)}${entry.toCol === null ? '' : ' / ' + readUserSpecifiedEndColumn(fromYear, toYear, entry.toCol)}; border-radius: 8px; background: var(--${entry.bg !== null ? entry.bg : 'fl-belize-hole'}); border: 1px solid #00000020; z-index: ${100 + entryIndex}; ${entry.style !== null ? entry.style : ''}`">
           <div x-text="entry.text"></div>
         </div>
       </template>
