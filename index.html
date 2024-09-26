@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="styles.css">
   <style id="grid-headers-dynamic-styles"></style>
   <style id="density-dynamic-styles"></style>
+  <style id="row-height-dynamic-styles"></style>
   <script src="lib/jquery-3.7.1.min.js"></script>
   <script src="yaml/dist/index.js"></script>
   <script src="utils.js"></script>
@@ -47,7 +48,7 @@
   <sl-split-panel vertical position="75" snap="100%">
 
   <!-- grid -->
-  <div slot="start" id="grid" class="grid" x-bind:style="`grid-template-rows: repeat(5, var(--header-row-height)) calc(var(--header-row-height) * 1.3) repeat(${rowCount - 6}, var(--row-height)) calc(var(--row-height) / 2) auto;`">
+  <div slot="start" id="grid" class="grid" x-bind:style="`grid-template-rows: var(--header-row-height) repeat(4, var(--header-row-height)) calc(var(--header-row-height) * 1.3) repeat(${rowCount - 6}, var(--row-height)) calc(var(--row-height) / 2) auto;`">
 
     <!-- dummy div for measuring the width of the grid -->
     <div id="dummy-full-width-grid-row" x-bind:style="`grid-row: 1; grid-column: 1 / ${lastColumn + 1}`"></div>
@@ -67,7 +68,7 @@
                       <span class="sticky-against-row-headers" x-text="monthNames[month - 1]"></span>
                     </div>
                     <!-- border for each month -->
-                    <div x-bind:style="`z-index: 10000; grid-column: ${column(fromYear, year, month, 1)}; grid-row: 4 / -1; ${yearIndex === 0 && month === 1 ? '' : 'border-left: 1px solid var(--month-border-color);'}`"></div>
+                    <div x-bind:style="`z-index: 50; grid-column: ${column(fromYear, year, month, 1)}; grid-row: 4 / -1; ${yearIndex === 0 && month === 1 ? '' : 'border-left: 1px solid var(--month-border-color);'}`"></div>
                     <!-- row backgrounds for day columns -->
                     <div class="sticky-column-header" x-bind:style="`--row: 4; grid-column: ${column(fromYear, year, month, 1)} / ${column(fromYear, year, month, daysInMonth(year, month)) + 1}; background: var(--days-color);`"></div>
                     <div class="sticky-column-header" x-bind:style="`--row: 5; grid-column: ${column(fromYear, year, month, 1)} / ${column(fromYear, year, month, daysInMonth(year, month)) + 1}; background: var(--weekday-color);`"></div>
@@ -108,16 +109,19 @@
     <!-- row headers -->
     <div class="row-headers" style="display: contents;">
       <!-- background for row headers -->
-      <div class="header-controls row-headers-bg" id="row-headers-bg" style="grid-row: 1 / -1; min-width: 150px;"></div>
+      <div class="header-controls row-headers-bg" id="row-headers-bg" style="grid-row: 1 / -1; min-width: 180px;"></div>
       <!-- control background -->
       <div class="sticky-column-header header-controls row-header-controls-bg" style="--row: 1; grid-row: 1 / 7; padding: 0; margin-bottom: 16px; z-index: 20001; border-bottom: 1px solid #6b6b6b;"></div>
       <!-- extra piece of non-sticky control background to occlude border before scrolling -->
       <div class="header-controls row-header-controls-bg row-header-controls-bg-border-occlusion" style="grid-row: 6 / 7; padding: 0; z-index: 20001;"></div>
-      <!-- density slider -->
-      <div class="sticky-column-header header-controls" style="--row: 1; grid-row: 1 / 3; display: flex; flex-direction: column; justify-content: center;">
-        <sl-range style="padding: 0;" id="density-range" x-bind:min="columnWidthToDensitySliderValue(5)" x-bind:max="columnWidthToDensitySliderValue(200)" x-bind:value="columnWidthToDensitySliderValue(17)" step="0.01" tooltip="none">
-          <span slot="label" style="font-size: 0.8rem;">Density</span>
-        </sl-range>
+      <!-- density sliders -->
+      <div class="sticky-column-header header-controls" style="--row: 1; grid-row: 1 / 3; display: flex; flex-direction: row; align-items: center; padding-right: 0; padding-top: 0; padding-bottom: 0;">
+        <svg style="height: 18px; margin-right: 6px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" > <path d="M1 7H3V17H1V7Z" fill="currentColor" /> <path d="M8.44769 7.75732L9.86191 9.17154L8.03344 11H15.9664L14.138 9.17154L15.5522 7.75732L19.7948 12L15.5522 16.2426L14.138 14.8284L15.9664 13H8.03354L9.86194 14.8284L8.44773 16.2426L4.20505 12L8.44769 7.75732Z" fill="currentColor" /><path d="M23 7H21V17H23V7Z" fill="currentColor" /></svg>
+        <sl-range style="flex: 1; margin-top: -3px; margin-right: 6px; padding: 0;" id="density-range" x-bind:min="columnWidthToDensitySliderValue(5)" x-bind:max="columnWidthToDensitySliderValue(200)" x-bind:value="columnWidthToDensitySliderValue(17)" step="0.02" tooltip="none"></sl-range>
+        <svg style="height: 18px; margin-right: 6px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" > <path d="M17 1V3L7 3V1L17 1Z" fill="currentColor" /> <path d="M16.2427 8.44772L14.8285 9.86194L13 8.03347L13 15.9665L14.8285 14.138L16.2427 15.5522L12 19.7949L7.75742 15.5522L9.17163 14.138L11 15.9664L11 8.03357L9.17163 9.86194L7.75742 8.44772L12 4.20508L16.2427 8.44772Z" fill="currentColor" /><path d="M17 23V21H7V23H17Z" fill="currentColor" /></svg>
+        <div style="flex-basis: 30px; position: relative; inset: 0;">
+          <sl-range style="position: absolute; inset: 0; left: -7px; width: 40px; transform: rotate(90deg); padding: 0;" id="row-height-range" x-bind:min="24" x-bind:max="48" x-bind:value="32" step="0.1" tooltip="none"></sl-range>
+        </div>
       </div>
       <div class="sticky-column-header header-controls" style="--row: 3; grid-row: 3 / 7; display: flex; flex-direction: column; justify-content: start; gap: 10px; padding-top: 6px;">
         <!-- jump to today -->
@@ -173,14 +177,14 @@
         <div style="display: contents;">
           <!-- main block -->
           <div x-bind:style="`display: flex; flex-direction: row; align-items: center; padding: 0 6px; grid-row: ${readUserSpecifiedStartRow(sections, firstDataRow, rowCount, entry.row)}${entry.toRow === null ? '' : ' / ' + readUserSpecifiedEndRow(sections, firstDataRow, rowCount, entry.toRow)}; grid-column: ${readUserSpecifiedStartColumn(fromYear, toYear, entry.col)}${entry.toCol === null ? '' : ' / ' + readUserSpecifiedEndColumn(fromYear, toYear, entry.toCol)}; border-radius: 8px; background: var(--${entry.bg !== null ? entry.bg : 'fl-belize-hole'}); border: 1px solid #00000020; z-index: ${2000 + entryIndex}; ${entry.style !== null ? entry.style : ''}`">
-            <div x-text="entry.text"></div>
+            <div class="entry-text entry-content-leftmost" x-text="entry.text"></div>
           </div>
           <!-- tag includes -->
           <template x-for="item in includesOfEntry(sections, entry)">
             <div x-bind:style="`position: relative; display: flex; flex-direction: row; align-items: center; padding: 0 6px; grid-row: ${item.index}; grid-column: ${readUserSpecifiedStartColumn(fromYear, toYear, entry.col)}${entry.toCol === null ? '' : ' / ' + readUserSpecifiedEndColumn(fromYear, toYear, entry.toCol)}; border-radius: 8px; background: var(--${entry.bg !== null ? entry.bg : 'fl-belize-hole'}); border: 1px solid #00000020; z-index: ${1000 + entryIndex}; ${entry.style !== null ? entry.style : ''}`">
               <div style="border-radius: 8px; position: absolute; inset: 1px; background: #312e2a9e; z-index: -1;"></div>
-              <svg style="min-width: 10.5px; min-height: 12px; height: 12px; fill: white;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 80L0 229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7L48 32C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
-              <div x-text="entry.text"></div>
+              <svg class="entry-content-leftmost" style="min-width: 10.5px; min-height: 12px; height: 12px; fill: white;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 80L0 229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7L48 32C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
+              <div class="entry-text" x-text="entry.text"></div>
             </div>
           </template>
         </div>

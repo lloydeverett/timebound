@@ -228,3 +228,7 @@ textarea.data-invalid {
 .today-column-header-background::before {
   background: var(--today-header-color);
 }
+
+.entry-content-leftmost {
+  padding-left: calc(var(--row-height) * 0.2);
+}

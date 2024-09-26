@@ -77,6 +77,10 @@ $(function() {
         if (savedDensity !== null) {
             setSelectedColumnWidth(savedDensity);
         }
+        const savedRowHeight = localStorage.getItem('rowHeight');
+        if (savedRowHeight !== null) {
+            $('#row-height-range')[0].value = savedRowHeight;
+        }
         const searchParam = new URL(window.location).searchParams.get('data');
         if (searchParam !== null) {
             $('#textarea').val(base64ToString(searchParam));
@@ -138,6 +142,19 @@ $(function() {
         localStorage.setItem('density', getSelectedColumnWidth());
     });
     updateDensityStyles();
+
+    function updateRowHeightStyles() {
+        $('#row-height-dynamic-styles').html(`
+            body {
+              --row-height: ${$('#row-height-range')[0].value}px;
+            }
+        `);
+    }
+    $('#row-height-range').on('input', function() {
+        updateRowHeightStyles();
+        localStorage.setItem('rowHeight', $('#row-height-range')[0].value);
+    });
+    updateRowHeightStyles();
 
     function onYearsChanged() {
         Alpine.store('grid').fromYear = parseInt($('#fromYear-select').val());
