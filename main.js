@@ -31,8 +31,9 @@ $(document).on('alpine:init', function() {
       rowCount: firstDataRow,
       sections: [],
       entries: [],
-      egSprintStart: [2024, 1, 1],
+      egSprintStart: '2024-01-01',
       egSprintIndex: 1,
+      sprintLength: 14,
       // reactivity isn't quite smart enough to always do the right thing here, so here's a
       // hacky trick to make sure that anything that depends on fromYear also depends on toYear
       // and vice versa
@@ -47,6 +48,13 @@ $(document).on('alpine:init', function() {
 });
 
 $(function() {
+    function getSelectedColumnWidth() {
+        return densitySliderValueToColumnWidth($('#density-range')[0].value);
+    }
+    function setSelectedColumnWidth(newValue) {
+        $('#density-range')[0].value = columnWidthToDensitySliderValue(newValue);
+    }
+
     function updateGridHeaderStyles() {
         $('#grid-headers-dynamic-styles').html(`
             .sticky-against-row-headers {
@@ -67,7 +75,7 @@ $(function() {
     { // load state
         const savedDensity = localStorage.getItem('density');
         if (savedDensity !== null) {
-            $('#density-range')[0].value = savedDensity;
+            setSelectedColumnWidth(savedDensity);
         }
         const searchParam = new URL(window.location).searchParams.get('data');
         if (searchParam !== null) {
@@ -85,7 +93,7 @@ $(function() {
     let lastGridScrollLeftSampleMs = +new Date();
     function updateDensityStyles() {
         const oldGridWidth = $('#dummy-full-width-grid-row').width();
-        const columnWidth = $('#density-range')[0].value;
+        const columnWidth = getSelectedColumnWidth();
 
         const nowMs = +new Date();
         // re-sampling the scroll left value introduces rounding errors, so if we just set the value,
@@ -127,7 +135,7 @@ $(function() {
     }
     $('#density-range').on('input', function() {
         updateDensityStyles();
-        localStorage.setItem('density', $('#density-range')[0].value);
+        localStorage.setItem('density', getSelectedColumnWidth());
     });
     updateDensityStyles();
 
@@ -182,7 +190,7 @@ $(function() {
           let egSprintStart = null;
           let egSprintIndex = null;
           if ('sprints' in obj) {
-            egSprintStart = [Number(obj.sprints.egSprintStart[0]), Number(obj.sprints.egSprintStart[1]), Number(obj.sprints.egSprintStart[2])];
+            egSprintStart = String(obj.sprints.egSprintStart);
             egSprintIndex = Number(obj.sprints.egSprintIndex);
           }
 
@@ -201,6 +209,7 @@ $(function() {
                 });
             }
           }
+
           result = {
             sections: sections,
             entries: entries,
@@ -242,7 +251,7 @@ $(function() {
         if (animating) { return; }
 
         const animationDurationMs = 700;
-        const todayOffset = $('#today-column-background').position().left + ($('#density-range')[0].value / 2);
+        const todayOffset = $('#today-column-background').position().left + (getSelectedColumnWidth() / 2);
 
         animating = true;
         $('.grid').animate({

@@ -4,6 +4,42 @@ html {
   height: 100%;
 }
 
+.paletted {
+  --p1:                             var(--palette-1-darker);
+  --p2:                             var(--palette-2);
+  --p3:                             var(--palette-3);
+  --p4:                             var(--palette-4);
+  --years-color:                    var(--p1);
+  --month-color:                    var(--p1);
+  --month-border-color:             var(--p1);
+  --sprint-color:                   var(--p2);
+  --sprint-border-color:            var(--p2);
+  --weekday-color:                  var(--p3);
+  --days-color:                     var(--p3);
+  --today-color:                    var(--p1);
+  --today-button-color:             var(--p1);
+  --today-header-color:             var(--palette-1-darkest);
+  --density-slider-active-color:    var(--palette-1-darkest);
+  --density-slider-inactive-color:  var(--p1);
+  --selection-color:                var(--p1);
+  --weekend-color:                 #3d3a38;
+
+  /* --years-color:                   #2c3e50; */
+  /* --month-color:                   #2c3e50; */
+  /* --sprint-color:                  #4a4a95; */
+  /* --weekday-color:                 #303952; */
+  /* --days-color:                    #303952; */
+  /* --today-color:                   #3e64bd; */
+  /* --today-button-color:            #4168c4; */
+  /* --today-header-color:            #3657a4; */
+  /* --today-border-color:            #3657a4; */
+  /* --density-slider-inactive-color: #4b79e5; */
+}
+
+.paletted::selection, .paletted *::selection {
+  background: var(--selection-color);
+}
+
 body {
   height: 100%;
   font-family: 'Inter Tight', 'Oxygen Mono', 'Courier', monospace;
@@ -13,20 +49,6 @@ body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-
-  --years-color:          #2c3e50;
-  --month-color:          #2c3e50;
-  --month-border-color:   #557ba0;
-  --days-color:           #303952;
-  --weekday-color:        #303952;
-  --today-color:          #3e64bd;
-  --today-button-color:   #4168c4;
-  --today-slider-color:   #4b79e5;
-  --today-header-color:   #3657a4;
-  --today-border-color:   #3657a4;
-  --sprint-color:         #4a4a95;
-  --sprint-border-color:  #785ab3;
-  --weekend-color:        #3d3a38;
 
   --header-row-height:  24px;
   --row-height:         32px;
@@ -43,6 +65,28 @@ sl-split-panel > * {
   height: 100%;
 }
 
+sl-range {
+  --sl-color-primary-500: var(--density-slider-active-color);
+  --sl-color-primary-600: var(--density-slider-inactive-color);
+}
+
+.header-controls, .column-headers {
+  z-index: 20002;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.sticky-column-header.header-controls {
+  z-index: 20002;
+}
+
+.sticky-column-header {
+  z-index: 10000;
+  position: sticky;
+  grid-row: var(--row);
+  top: calc(var(--header-row-height) * (var(--row) - 1));
+}
+
 .row-header-section, .entries-section {
   font-weight: 500;
   font-family: 'Inter', 'Inter Tight', 'Oxygen Mono', 'Courier', monospace;
@@ -50,11 +94,6 @@ sl-split-panel > * {
 
 .row-section-header {
   font-weight: 700;
-}
-
-sl-range {
-  --sl-color-primary-500: var(--today-header-color);
-  --sl-color-primary-600: var(--today-slider-color);
 }
 
 .grid {
@@ -82,8 +121,11 @@ sl-range {
   flex: 1;
 }
 
-#row-headers-bg {
-  background-color: #282828;
+.row-headers-bg, .row-header-controls-bg {
+  background-color: rgba(40,40,40,1);
+}
+.row-header-controls-bg-border-occlusion {
+  background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(40,40,40,1) 40%, rgba(40,40,40,1) 100%);
 }
 
 .row-headers > *, .row-header-section > * {
@@ -92,7 +134,7 @@ sl-range {
   left: 0;
   padding-left: 16px;
   padding-right: 20px;
-  z-index: 10000;
+  z-index: 20000;
 }
 
 .row-header {
@@ -169,4 +211,20 @@ textarea {
 }
 textarea.data-invalid {
   border: 1px solid var(--gb-neutral-orange);
+}
+
+.today-column-background {
+  position: relative;
+  z-index: 5;
+}
+.today-column-background::before, .today-column-header-background::before {
+  position: absolute;
+  inset: 0 calc(-1 * max(28px - 100%, 0px) / 2); /* min width */
+  content: '';
+}
+.today-column-background::before {
+  background: var(--today-color);
+}
+.today-column-header-background::before {
+  background: var(--today-header-color);
 }

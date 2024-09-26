@@ -134,6 +134,11 @@ function includesOfEntry(sections, entry) {
     return results;
 }
 
+function readUserSpecifiedSprintStart(sprintStart) {
+    const date = new Date(sprintStart);
+    return [date.getFullYear(), date.getMonth() + 1, date.getDate()];
+}
+
 function readUserSpecifiedStartColumn(fromYear, toYear, col) {
     if (col === '-1') { return column(fromYear, fromYear, 1, 1); }
     const date = new Date(col);
@@ -184,4 +189,12 @@ function expandDefaults(sections, entry) {
     // todo: this doesn't work, because entry will have the values set to null
     //       so we can't just use '...'
     return { ...(resolvedItem.defaults), ...entry };
+}
+
+function densitySliderValueToColumnWidth(value) {
+    return Math.pow(value, 2);
+}
+
+function columnWidthToDensitySliderValue(columnWidth) {
+    return Math.sqrt(columnWidth);
 }

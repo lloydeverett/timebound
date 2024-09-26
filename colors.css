@@ -1,5 +1,172 @@
 
+/* Lighter and darker variants */
+.paletted, .paletted {
+    --palette-1-slightly-darker:   color-mix(in srgb, var(--palette-1), black 15%);
+    --palette-2-slightly-darker:   color-mix(in srgb, var(--palette-2), black 15%);
+    --palette-3-slightly-darker:   color-mix(in srgb, var(--palette-3), black 15%);
+    --palette-4-slightly-darker:   color-mix(in srgb, var(--palette-4), black 15%);
+    --palette-1-darker:            color-mix(in srgb, var(--palette-1), black 20%);
+    --palette-2-darker:            color-mix(in srgb, var(--palette-2), black 20%);
+    --palette-3-darker:            color-mix(in srgb, var(--palette-3), black 20%);
+    --palette-4-darker:            color-mix(in srgb, var(--palette-4), black 20%);
+    --palette-1-darkest:           color-mix(in srgb, var(--palette-1), black 30%);
+    --palette-2-darkest:           color-mix(in srgb, var(--palette-2), black 30%);
+    --palette-3-darkest:           color-mix(in srgb, var(--palette-3), black 30%);
+    --palette-4-darkest:           color-mix(in srgb, var(--palette-4), black 30%);
+    --palette-1-slightly-lighter:  color-mix(in srgb, var(--palette-1), white 15%);
+    --palette-2-slightly-lighter:  color-mix(in srgb, var(--palette-2), white 15%);
+    --palette-3-slightly-lighter:  color-mix(in srgb, var(--palette-3), white 15%);
+    --palette-4-slightly-lighter:  color-mix(in srgb, var(--palette-4), white 15%);
+    --palette-1-lighter:           color-mix(in srgb, var(--palette-1), white 20%);
+    --palette-2-lighter:           color-mix(in srgb, var(--palette-2), white 20%);
+    --palette-3-lighter:           color-mix(in srgb, var(--palette-3), white 20%);
+    --palette-4-lighter:           color-mix(in srgb, var(--palette-4), white 20%);
+    --palette-1-lightest:          color-mix(in srgb, var(--palette-1), white 30%);
+    --palette-2-lightest:          color-mix(in srgb, var(--palette-2), white 30%);
+    --palette-3-lightest:          color-mix(in srgb, var(--palette-3), white 30%);
+    --palette-4-lightest:          color-mix(in srgb, var(--palette-4), white 30%);
+}
+
+/* Palette cycling boilerplate */
+.paletted, .paletted {
+    --palette-1: var(--palette-cycled-1);
+    --palette-2: var(--palette-cycled-2);
+    --palette-3: var(--palette-cycled-3);
+    --palette-4: var(--palette-cycled-4);
+}
+.paleted.palette-cycle-0, .palleted.palette-cycle-0 {
+    --palette-1: var(--palette-cycled-1);
+    --palette-2: var(--palette-cycled-2);
+    --palette-3: var(--palette-cycled-3);
+    --palette-4: var(--palette-cycled-4);
+}
+.paleted.palette-cycle-1, .palleted.palette-cycle-1 {
+    --palette-2: var(--palette-cycled-1);
+    --palette-3: var(--palette-cycled-2);
+    --palette-4: var(--palette-cycled-3);
+    --palette-1: var(--palette-cycled-4);
+}
+.paleted.palette-cycle-2, .palleted.palette-cycle-2 {
+    --palette-3: var(--palette-cycled-1);
+    --palette-4: var(--palette-cycled-2);
+    --palette-1: var(--palette-cycled-3);
+    --palette-2: var(--palette-cycled-4);
+}
+.paleted.palette-cycle-3, .palleted.palette-cycle-3 {
+    --palette-4: var(--palette-cycled-1);
+    --palette-1: var(--palette-cycled-2);
+    --palette-2: var(--palette-cycled-3);
+    --palette-3: var(--palette-cycled-4);
+}
+
+/* Palette selection boilerplate */
+.paletted, .paletted.palette-pastel { /* default to pastel palette via .paletted selector */
+    --palette-cycled-1: var(--pastel-1);
+    --palette-cycled-2: var(--pastel-2);
+    --palette-cycled-3: var(--pastel-3);
+    --palette-cycled-4: var(--pastel-4);
+}
+.paletted.palette-sunlight {
+    --palette-cycled-1: var(--sunlight-1);
+    --palette-cycled-2: var(--sunlight-2);
+    --palette-cycled-3: var(--sunlight-3);
+    --palette-cycled-4: var(--sunlight-4);
+}
+.paletted.palette-daylight {
+    --palette-cycled-1: var(--daylight-1);
+    --palette-cycled-2: var(--daylight-2);
+    --palette-cycled-3: var(--daylight-3);
+    --palette-cycled-4: var(--daylight-4);
+}
+.paletted.palette-firelight {
+    --palette-cycled-1: var(--daylight-1);
+    --palette-cycled-2: var(--daylight-2);
+    --palette-cycled-3: var(--daylight-3);
+    --palette-cycled-4: var(--daylight-4);
+}
+.paletted.palette-lenience {
+    --palette-cycled-1: var(--lenience-1);
+    --palette-cycled-2: var(--lenience-2);
+    --palette-cycled-3: var(--lenience-3);
+    --palette-cycled-4: var(--lenience-4);
+}
+.paletted.palette-electric {
+    --palette-cycled-1: var(--electric-1);
+    --palette-cycled-2: var(--electric-2);
+    --palette-cycled-3: var(--electric-3);
+    --palette-cycled-4: var(--electric-4);
+}
+.paletted.palette-sunset {
+    --palette-cycled-1: var(--sunset-1);
+    --palette-cycled-2: var(--sunset-2);
+    --palette-cycled-3: var(--sunset-3);
+    --palette-cycled-4: var(--sunset-4);
+}
+.paletted.palette-rolodex {
+    --palette-cycled-1: var(--rolodex-1);
+    --palette-cycled-2: var(--rolodex-2);
+    --palette-cycled-3: var(--rolodex-3);
+    --palette-cycled-4: var(--rolodex-4);
+}
+
+/* Define palettes */
 :root {
+    /* --------------------------------------------------------------------------------- */
+    /* https://palettes.shecodes.io                                                      */
+    /* --------------------------------------------------------------------------------- */
+
+    /* pastel ------------------------------------*/
+    --pastel-1:                           #42B883; 
+    --pastel-2:                           #347474; 
+    --pastel-3:                           #35495E; 
+    --pastel-4:                           #FF7E67; 
+
+    /* sunlight ----------------------------------*/
+    --sunlight-1:                         #155263; 
+    --sunlight-2:                         #FF6F3C; 
+    --sunlight-3:                         #FF9A3C; 
+    --sunlight-4:                         #FFC93C; 
+
+    /* daylight ----------------------------------*/
+    --daylight-1:                         #ECECEC; 
+    --daylight-2:                         #9FD3C7; 
+    --daylight-3:                         #385170; 
+    --daylight-4:                         #142D4C; 
+
+    /* firelight ---------------------------------*/
+    --firelight-1:                        #57385C; 
+    --firelight-2:                        #A75265; 
+    --firelight-3:                        #EC7263; 
+    --firelight-4:                        #FEBE7E; 
+
+    /* lenience ----------------------------------*/
+    --lenience-1:                         #394A51; 
+    --lenience-2:                         #7FA99B; 
+    --lenience-3:                         #FBF2D5; 
+    --lenience-4:                         #FDC57B; 
+
+    /* electric ----------------------------------*/
+    --electric-1:                         #90F6D7; 
+    --electric-2:                         #35BCBF; 
+    --electric-3:                         #41506B; 
+    --electric-4:                         #263849; 
+
+    /* sunset ------------------------------------*/
+    --sunset-1:                           #0E2431; 
+    --sunset-2:                           #FC3A52; 
+    --sunset-3:                           #F9B248; 
+    --sunset-4:                           #E8D5B7; 
+
+    /* rolodex -----------------------------------*/
+    --rolodex-1:                          #3C4245; 
+    --rolodex-2:                          #5F6769; 
+    --rolodex-3:                          #719192; 
+    --rolodex-4:                          #DFCDC3; 
+
+    /* --------------------------------------------------------------------------------- */
+    /* https://flatuicolors.com                                                          */
+    /* --------------------------------------------------------------------------------- */
+
     /* flat UI v1 --------------------------------*/
     --fl-alizarin:                        #E74C3C;
     --fl-amethyst:                        #9B59B6;
@@ -151,7 +318,7 @@
     --de-turquoise-topaz:                 #0FB9B1;
     --de-twinkle-blue:                    #D1D8E0;
 
-    /* spanish palette ---------------------------*/
+    /* russian palette ---------------------------*/
     --ru-apple-valley:                    #EA8685;
     --ru-biscay:                          #303952;
     --ru-blue-curacao:                    #3DC1D3;
