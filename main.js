@@ -191,8 +191,16 @@ $(function() {
                     header: 'header' in objItem ? !!objItem.header : null,
                     includeTags: 'includeTags' in objItem ? objItem.includeTags.split(' ').filter(s => s.length > 0) : [],
                     defaults: 'defaults' in objItem ? { bg: String(objItem.defaults.bg) } : {},
+                    height: 'height' in objItem ? Number(objItem.height) : null,
+                    subdivisions: 'subdivisions' in objItem && Number(objItem.subdivisions) >= 1 ? Number(objItem.subdivisions) : null,
                     index: row++
                 };
+                if (item.subdivisions !== null) {
+                    row += item.subdivisions - 1;
+                    item.endIndex = item.index + item.subdivisions - 1;
+                } else {
+                    item.endIndex = item.index;
+                }
                 items.push(item);
             }
             sections.push({

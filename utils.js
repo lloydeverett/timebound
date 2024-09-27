@@ -202,3 +202,17 @@ function densitySliderValueToColumnWidth(value) {
 function columnWidthToDensitySliderValue(columnWidth) {
     return Math.sqrt(columnWidth);
 }
+
+function sectionRowHeightMultipliers(sections, rowCount) {
+    let result = [];
+    for (let i = firstDataRow; i < rowCount; i++) { result.push(1); }
+    for (const section of sections) {
+        for (const item of section.items) {
+            if (item.height === null) { continue; }
+            for (let i = item.index; i <= item.endIndex; i++) {
+                result[i - firstDataRow] = item.height / (item.subdivisions === null ? 1 : item.subdivisions);
+            }
+        }
+    }
+    return result;
+}
