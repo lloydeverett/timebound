@@ -186,9 +186,13 @@ function expandDefaults(sections, entry) {
     if (resolvedItem === null || resolvedItem.defaults === null) {
         return entry;
     }
-    // todo: this doesn't work, because entry will have the values set to null
-    //       so we can't just use '...'
-    return { ...(resolvedItem.defaults), ...entry };
+    let additions = {};
+    for (const key in entry) {
+        if (entry[key] === null && key in resolvedItem.defaults) {
+            additions[key] = resolvedItem.defaults[key];
+        }
+    }
+    return {...entry, ...additions};
 }
 
 function densitySliderValueToColumnWidth(value) {

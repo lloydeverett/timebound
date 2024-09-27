@@ -190,8 +190,7 @@ $(function() {
                     text: String(objItem.text),
                     header: 'header' in objItem ? !!objItem.header : null,
                     includeTags: 'includeTags' in objItem ? objItem.includeTags.split(' ').filter(s => s.length > 0) : [],
-                    // todo: obviously not right
-                    defaults: { bg: 'fl-carrot' },
+                    defaults: 'defaults' in objItem ? { bg: String(objItem.defaults.bg) } : {},
                     index: row++
                 };
                 items.push(item);
