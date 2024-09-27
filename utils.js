@@ -210,7 +210,7 @@ function sectionRowHeightMultipliers(sections, rowCount) {
         for (const item of section.items) {
             if (item.height === null) { continue; }
             for (let i = item.index; i <= item.endIndex; i++) {
-                result[i - firstDataRow] = item.height / (item.subdivisions === null ? 1 : item.subdivisions);
+                result[i - firstDataRow] = item.height / (item.slots === null ? 1 : item.slots);
             }
         }
     }

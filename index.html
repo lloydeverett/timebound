@@ -148,7 +148,7 @@
         <div class="row-header-section" style="display: contents;">
           <!-- line items -->
           <template x-for="(item, itemIndex) in section.items">
-            <div x-bind:class="'row-header ' + (item.header ? 'row-section-header' : '')" x-bind:style="`grid-row: ${item.index};`">
+            <div x-bind:class="'row-header ' + (item.header ? 'row-section-header' : '')" x-bind:style="`grid-row: ${item.index} / ${item.endIndex + 1};`">
               <div class="row-header-text" x-text="item.text"></div>
             </div>
           </template>

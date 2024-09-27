@@ -192,12 +192,12 @@ $(function() {
                     includeTags: 'includeTags' in objItem ? objItem.includeTags.split(' ').filter(s => s.length > 0) : [],
                     defaults: 'defaults' in objItem ? { bg: String(objItem.defaults.bg) } : {},
                     height: 'height' in objItem ? Number(objItem.height) : null,
-                    subdivisions: 'subdivisions' in objItem && Number(objItem.subdivisions) >= 1 ? Number(objItem.subdivisions) : null,
+                    slots: 'slots' in objItem && Number(objItem.slots) >= 1 ? Number(objItem.slots) : null,
                     index: row++
                 };
-                if (item.subdivisions !== null) {
-                    row += item.subdivisions - 1;
-                    item.endIndex = item.index + item.subdivisions - 1;
+                if (item.slots !== null) {
+                    row += item.slots - 1;
+                    item.endIndex = item.index + item.slots - 1;
                 } else {
                     item.endIndex = item.index;
                 }
