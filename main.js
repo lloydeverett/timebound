@@ -169,6 +169,26 @@ $(function() {
     $('#toYear-select').on('change', onYearsChanged);
 
     function renderData() {
+        const readTags = function(str) {
+            return str.split(' ').filter(s => s.length > 0).flatMap(s => {
+                console.log(str);
+                let match = s.match(/^(.+)\*(\d+)$/);
+                if (match) {
+                    let count = Number(match[2]);
+                    let tag = match[1];
+                    return Array(Number(count)).fill(tag);
+                }
+                match = s.match(/^(\d+)\*(.+)$/);
+                if (match) {
+                    let count = Number(match[1]);
+                    let tag = match[2];
+                    return Array(count).fill(tag);
+                }
+                return [s];
+            });
+        };
+        const store = Alpine.store('grid');
+
         let result;
         try {
           const obj = yaml.load($('#textarea').val())
@@ -189,7 +209,7 @@ $(function() {
                     id: String(objItem.id),
                     text: String(objItem.text),
                     header: 'header' in objItem ? !!objItem.header : null,
-                    includeTags: 'includeTags' in objItem ? objItem.includeTags.split(' ').filter(s => s.length > 0) : [],
+                    includeTags: 'includeTags' in objItem ? readTags(String(objItem.includeTags)) : [],
                     defaults: 'defaults' in objItem ? { bg: String(objItem.defaults.bg) } : {},
                     height: 'height' in objItem ? Number(objItem.height) : null,
                     slots: 'slots' in objItem && Number(objItem.slots) >= 1 ? Number(objItem.slots) : null,
@@ -228,11 +248,13 @@ $(function() {
                   toCol: (Array.isArray(objEntry.col) && objEntry.col.length >= 2) ? String(objEntry.col[1]) : null,
                   bg: 'bg' in objEntry ? String(objEntry.bg) : null,
                   style: 'style' in objEntry ? String(objEntry.style) : null,
-                  tags: 'tags' in objEntry ? (String(objEntry.tags).split(' ').filter(s => s.length > 0)) : [],
+                  tags: 'tags' in objEntry ? readTags(String(objEntry.tags)) : [],
                   text: String(objEntry.text)
                 });
             }
           }
+
+          calculateSlotOccupancy(store.fromYear, store.toYear, sections, entries);
 
           result = {
             sections: sections,
@@ -248,12 +270,11 @@ $(function() {
           return;
         }
         $('#textarea').toggleClass('data-invalid', false);
-        const store = Alpine.store('grid');
+
         if (result.egSprintStart !== null && result.egSprintIndex !== null) {
             store.egSprintStart = result.egSprintStart;
             store.egSprintIndex = result.egSprintIndex;
         }
-
         // nb: order we set these is important; beware reactivity bugs
         store.entries = result.entries;
         store.sections = result.sections;

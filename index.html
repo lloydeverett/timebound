@@ -174,16 +174,24 @@
       <template x-for="(entry, entryIndex) in entries.map(e => expandDefaults(sections, e))">
         <div style="display: contents;">
           <!-- main block -->
-          <div x-bind:style="`display: flex; flex-direction: row; align-items: center; padding: 0 6px; grid-row: ${readUserSpecifiedStartRow(sections, firstDataRow, rowCount, entry.row)}${entry.toRow === null ? '' : ' / ' + readUserSpecifiedEndRow(sections, firstDataRow, rowCount, entry.toRow)}; grid-column: ${readUserSpecifiedStartColumn(fromYear, toYear, entry.col)}${entry.toCol === null ? '' : ' / ' + readUserSpecifiedEndColumn(fromYear, toYear, entry.toCol)}; border-radius: 8px; background: var(--${entry.bg !== null ? entry.bg : 'fl-belize-hole'}); border: 1px solid #00000020; z-index: ${2000 + entryIndex}; ${entry.style !== null ? entry.style : ''}`">
+          <div x-bind:style="`display: flex; flex-direction: row; align-items: center; padding: 0 6px; grid-row: ${readUserSpecifiedStartRow(sections, firstDataRow, rowCount, entry.row)} / ${readUserSpecifiedEndRow(sections, firstDataRow, rowCount, entry.toRow === null ? entry.row : entry.toRow)}; grid-column: ${readUserSpecifiedStartColumn(fromYear, toYear, entry.col)}${entry.toCol === null ? '' : ' / ' + readUserSpecifiedEndColumn(fromYear, toYear, entry.toCol)}; border-radius: 8px; background: var(--${entry.bg !== null ? entry.bg : 'fl-belize-hole'}); border: 1px solid #00000020; z-index: ${2000 + entryIndex}; ${entry.style !== null ? entry.style : ''}`">
             <div class="entry-text entry-content-leftmost" x-text="entry.text"></div>
           </div>
           <!-- tag includes -->
           <template x-for="item in includesOfEntry(sections, entry)">
-            <div x-bind:style="`position: relative; display: flex; flex-direction: row; align-items: center; padding: 0 6px; grid-row: ${item.index}; grid-column: ${readUserSpecifiedStartColumn(fromYear, toYear, entry.col)}${entry.toCol === null ? '' : ' / ' + readUserSpecifiedEndColumn(fromYear, toYear, entry.toCol)}; border-radius: 8px; background: var(--${entry.bg !== null ? entry.bg : 'fl-belize-hole'}); border: 1px solid #00000020; z-index: ${1000 + entryIndex}; ${entry.style !== null ? entry.style : ''}`">
-              <div style="border-radius: 8px; position: absolute; inset: 1px; background: #312e2a9e; z-index: -1;"></div>
-              <svg class="entry-content-leftmost" style="min-width: 10.5px; min-height: 12px; height: 12px; fill: white;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 80L0 229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7L48 32C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
-              <div class="entry-text" x-text="entry.text"></div>
-            </div>
+            <!-- consumption of slot ranges -->
+            <template x-for="slotRange in continguousRanges(entry.occupiedSlots.get(item.index))">
+              <div style="display: contents;">
+                <div x-bind:style="`position: relative; display: flex; flex-direction: row; align-items: center; padding: 0 6px; grid-row: ${item.index + slotRange[0]} / ${item.index + slotRange[1] + 1}; grid-column: ${readUserSpecifiedStartColumn(fromYear, toYear, entry.col)}${entry.toCol === null ? '' : ' / ' + readUserSpecifiedEndColumn(fromYear, toYear, entry.toCol)}; border-radius: 8px; background: var(--${entry.bg !== null ? entry.bg : 'fl-belize-hole'}); border: 1px solid #00000020; z-index: ${1000 + entryIndex}; ${entry.style !== null ? entry.style : ''}`">
+                  <div style="border-radius: 8px; position: absolute; inset: 1px; background: #312e2a9e; z-index: -1;"></div>
+                  <svg class="entry-content-leftmost" style="min-width: 10.5px; min-height: 12px; height: 12px; fill: white;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 80L0 229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7L48 32C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
+                  <template x-if="slotRange && entry.occupiedSlots.get(item.index) && entry.occupiedSlots.get(item.index).length > 1">
+                    <div style="border-radius: 6px; background: #00000040; padding: 3px 4px; font-size: 0.7em; margin: 0 2px;" x-text="(slotRange[1] - slotRange[0] + 1 < entry.occupiedSlots.get(item.index).length ? ((slotRange[1] - slotRange[0] + 1) + ' / ') : '') + entry.occupiedSlots.get(item.index).length"></div>
+                  </template>
+                  <div class="entry-text" x-text="entry.text"></div>
+                </div>
+              </div>
+            </template>
           </template>
         </div>
       </template>
