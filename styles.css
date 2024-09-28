@@ -40,6 +40,10 @@ html {
   background: var(--selection-color);
 }
 
+.tight-font {
+  font-family: 'Inter Tight', 'Oxygen Mono', 'Courier', monospace;
+}
+
 body {
   height: 100%;
   font-family: 'Inter Tight', 'Oxygen Mono', 'Courier', monospace;

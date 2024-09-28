@@ -146,10 +146,16 @@
       <!-- render each section -->
       <template x-for="section in sections.filter(s => s.items.length > 0)">
         <div class="row-header-section" style="display: contents;">
-          <!-- line items -->
-          <template x-for="(item, itemIndex) in section.items">
+          <!-- item headers -->
+          <template x-for="item in section.items">
             <div x-bind:class="'row-header ' + (item.header ? 'row-section-header' : '')" x-bind:style="`grid-row: ${item.index} / ${item.endIndex + 1};`">
               <div class="row-header-text" x-text="item.text"></div>
+            </div>
+          </template>
+          <!-- slot headers -->
+          <template x-for="elem in section.items && section.items.filter(i => i.slots > 1).flatMap(i => range(0, i.slots - 1).map(s => ({ slot: s, item: i })))">
+            <div x-bind:class="'tight-font row-header ' + (elem.item.header ? 'row-section-header' : '')" x-bind:style="`grid-row: ${elem.item.index + elem.slot}; justify-content: flex-end;`">
+              <div class="row-header-text" style="min-width: 10px; text-align: center;" x-text="elem.slot + 1"></div>
             </div>
           </template>
           <!-- section border across grid -->
@@ -186,7 +192,7 @@
                   <div style="border-radius: 8px; position: absolute; inset: 1px; background: #312e2a9e; z-index: -1;"></div>
                   <svg class="entry-content-leftmost" style="min-width: 10.5px; min-height: 12px; height: 12px; fill: white;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 80L0 229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7L48 32C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
                   <template x-if="slotRange && entry.occupiedSlots.get(item.index) && entry.occupiedSlots.get(item.index).length > 1">
-                    <div style="border-radius: 6px; background: #00000040; padding: 3px 4px; font-size: 0.7em; margin: 0 2px;" x-text="(slotRange[1] - slotRange[0] + 1 < entry.occupiedSlots.get(item.index).length ? ((slotRange[1] - slotRange[0] + 1) + ' / ') : '') + entry.occupiedSlots.get(item.index).length"></div>
+                    <div class="tight-font" style="border-radius: 6px; background: #00000040; padding: 3px 4px; font-size: 0.7em; margin: 0 2px;" x-text="(slotRange[1] - slotRange[0] + 1 < entry.occupiedSlots.get(item.index).length ? ((slotRange[1] - slotRange[0] + 1) + ' / ') : '') + entry.occupiedSlots.get(item.index).length"></div>
                   </template>
                   <div class="entry-text" x-text="entry.text"></div>
                 </div>
