@@ -44,6 +44,10 @@ html {
   font-family: 'Inter Tight', 'Oxygen Mono', 'Courier', monospace;
 }
 
+.entries-section *, .row-headers * {
+  transition: opacity ease-out 0.7s, border-radius ease-out 0.7s;
+}
+
 body {
   height: 100%;
   font-family: 'Inter Tight', 'Oxygen Mono', 'Courier', monospace;

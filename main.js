@@ -34,6 +34,7 @@ $(document).on('alpine:init', function() {
       egSprintStart: '2024-01-01',
       egSprintIndex: 1,
       sprintLength: 14,
+      rowHeight: 32,
       // reactivity isn't quite smart enough to always do the right thing here, so here's a
       // hacky trick to make sure that anything that depends on fromYear also depends on toYear
       // and vice versa
@@ -144,9 +145,11 @@ $(function() {
     updateDensityStyles();
 
     function updateRowHeightStyles() {
+        const rowHeight = $('#row-height-range')[0].value;
+        Alpine.store('grid').rowHeight = rowHeight;
         $('#row-height-dynamic-styles').html(`
             body {
-              --row-height: ${$('#row-height-range')[0].value}px;
+              --row-height: ${rowHeight}px;
             }
         `);
     }

@@ -4,6 +4,7 @@
  * stateless helper functions defined before the first render
 */
 
+const autoCompactRowBreakpoint = 20 /* px */;
 const firstDataRow = 7;
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 const monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -260,6 +261,15 @@ function sectionRowHeightMultipliers(sections, rowCount) {
         }
     }
     return result;
+}
+
+function isCompact(sections, rowCount, rowHeight, item) {
+    if (item.compact !== null) {
+        return item.compact;
+    }
+    const slots = item.slots === null ? 1 : item.slots;
+    const actualHeight = ((item.height === null) ? slots : item.height) * rowHeight;
+    return actualHeight / slots <= autoCompactRowBreakpoint;
 }
 
 // nb: unlike the others, this function isn't pure in that it mutates its input paramaters by adding occupancy info
