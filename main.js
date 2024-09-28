@@ -213,6 +213,8 @@ $(function() {
                     defaults: 'defaults' in objItem ? { bg: String(objItem.defaults.bg) } : {},
                     height: 'height' in objItem ? Number(objItem.height) : null,
                     slots: 'slots' in objItem && Number(objItem.slots) >= 1 ? Number(objItem.slots) : null,
+                    bg: 'bg' in objItem ? String(objItem.bg) : null,
+                    compact: 'compact' in objItem ? !!objItem.compact : null,
                     index: row++
                 };
                 if (item.slots !== null) {
