@@ -339,7 +339,10 @@ function calculateSlotOccupancy(fromYear, toYear, sections, entries) {
                         occupiedSlots.push(slot);
                         currentOccupiedSlots.push(slot);
                     } else if (deltas[i].delta > 0) { // free slot
-                        if (currentOccupiedSlots.length === 0) { console.error('uh-oh, algorithm wanted to free a slot that was never consumed by  ' + deltas[i].entry.text); continue; }
+                        if (currentOccupiedSlots.length === 0) {
+                            console.error('uh-oh, algorithm wanted to free a slot that was never consumed by  ' + deltas[i].entry.text);
+                            continue;
+                        }
                         const occupiedSlot = currentOccupiedSlots.pop();
                         if (occupiedSlot >= 0) {
                             slots.unshift(occupiedSlot);
