@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="colors.css">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="shoelace/dist/bundle.css">
   <style id="grid-headers-dynamic-styles"></style>
   <style id="density-dynamic-styles"></style>
   <style id="row-height-dynamic-styles"></style>
@@ -17,16 +18,15 @@
   <script src="main.js"></script>
   <script defer src="lib/alpinejs.min.js"></script>
   <script defer src="shoelace/dist/index.js"></script>
-  <link rel="stylesheet" href="shoelace/dist/bundle.css">
 
-  <link rel="icon" href="public/favicon.svg" type="image/svg+xml">
+  <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
   <link rel="apple-touch-icon" sizes="180x180" href="public/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="public/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="public/favicon-16x16.png">
   <link rel="manifest" href="public/site.webmanifest">
   <link rel="mask-icon" href="public/safari-pinned-tab.svg" color="#5bbad5">
-  <meta name="msapplication-TileColor" content="#00aba9">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="msapplication-TileColor" content="#0092ac">
+  <meta name="theme-color" content="#4e8b68">
 </head>
 
 <body class="sl-theme-dark paletted palette-pastel palette-cycle-0">
@@ -155,7 +155,7 @@
           </template>
           <!-- item backgrounds -->
           <template x-for="item in (sections, section.items)">
-            <div x-bind:style="`opacity: ${item.bg !== null ? '1' : (isCompact(sections, rowCount, rowHeight, item) ? '1' : '0')}; position: static; z-index: 999; grid-row: ${item.index} / ${item.endIndex + 1}; grid-column: 1 / ${lastColumn + 1}; background: var(--${item.bg === null ? 'nl-turkish-aqua' : item.bg});`"></div>
+            <div x-bind:style="`opacity: ${item.bg !== null ? '1' : (isCompact(sections, rowCount, rowHeight, item) ? '1' : '0')}; position: static; z-index: 999; grid-row: ${item.index} / ${item.endIndex + 1}; grid-column: 1 / ${lastColumn + 1}; background: ${item.bg === null ? ('color-mix(in srgb, var(--nl-turkish-aqua), black 20%)') : ('var(--' + item.bg + ')')};`"></div>
           </template>
           <!-- slot headers -->
           <template x-for="elem in (sections, section.items && section.items.filter(i => i.slots > 1).flatMap(i => range(0, i.slots - 1).map(s => ({ slot: s, item: i }))))">

@@ -1,6 +1,2 @@
-<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M501 257C501 392.31 391.31 502 256 502C120.69 502 11 392.31 11 257C11 121.69 120.69 12 256 12C391.31 12 501 121.69 501 257Z" fill="#5F4759" />
-    <path d="M465.556 384C488.048 346.966 501 303.495 501 257C501 243.029 499.831 229.332 497.585 216L14.4155 216C12.1693 229.332 11 243.029 11 257C11 303.495 23.9518 346.966 46.4443 384H465.556Z" fill="#32302F" />
-    <path d="M457.78 118C477.66 146.804 491.532 180.075 497.585 216H14.4155C20.4682 180.075 34.34 146.804 54.2203 118L457.78 118Z" fill="#2B6172" />
-    <path d="M467.933 134H44.0667C86.499 61.0452 165.522 12 256 12C346.478 12 425.501 61.0452 467.933 134Z" fill="#558387" />
-</svg>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="256" cy="257" r="245" fill="url(#paint0_linear_36_15)"/><defs><linearGradient id="paint0_linear_36_15" x1="11" y1="12" x2="501" y2="502" gradientUnits="userSpaceOnUse"><stop stop-color="#62B284"/><stop offset="0.38" stop-color="#51916C"/><stop offset="0.38" stop-color="#396767"/><stop offset="0.62" stop-color="#457373"/><stop offset="0.62" stop-color="#2D3A49"/><stop offset="1" stop-color="#39495C"/></linearGradient></defs></svg>
+
