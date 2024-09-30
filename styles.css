@@ -119,8 +119,15 @@ sl-range {
   padding: 3px;
 }
 
-.row-headers-bg, .row-header-controls-bg {
-  background-color: rgba(40,40,40,1);
+.row-headers-bg {
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  background-color: rgba(40,40,40,0.9);
+}
+.row-header-controls-bg {
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  background-color: rgba(40,40,40,0.9);
 }
 .row-header-controls-bg-border-occlusion {
   background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(40,40,40,1) 40%, rgba(40,40,40,1) 100%);

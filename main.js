@@ -78,7 +78,7 @@ $(function() {
     function updateGridHeaderStyles() {
         $('#grid-headers-dynamic-styles').html(`
             body {
-              --row-headers-column-width: ${$('#row-headers-bg').outerWidth()}px};
+              --row-headers-column-width: ${$('#row-headers-bg').outerWidth()}px;
             }
             .sticky-against-row-headers {
                 position: sticky;
