@@ -48,10 +48,9 @@
   todayDate:                new Date(),
   get lastColumn()          { return column(this.fromYear, this.toYear, 12, 31); }
 }">
-  <div class="split" style="display: flex; flex-direction: column;">
 
   <!-- grid -->
-  <div slot="start" id="grid" class="grid" x-bind:style="`grid-template-rows: repeat(5, var(--header-row-height)) calc(var(--header-row-height) * 1.3) ${sectionRowHeightMultipliers(sections, rowCount).map(s => 'calc(var(--row-height) * ' + s + ')').join(' ')} calc(var(--row-height) / 2) auto;`">
+  <div id="grid" class="grid" x-bind:style="`width: 100%; height: 100%; grid-template-rows: repeat(5, var(--header-row-height)) calc(var(--header-row-height) * 1.3) ${sectionRowHeightMultipliers(sections, rowCount).map(s => 'calc(var(--row-height) * ' + s + ')').join(' ')} calc(var(--row-height) / 2) auto;`">
 
     <!-- dummy div for measuring the width of the grid -->
     <div id="dummy-full-width-grid-row" x-bind:style="`grid-row: 1; grid-column: 1 / ${lastColumn + 1}`"></div>
@@ -214,13 +213,11 @@
   </div>
 
   <!-- source editor -->
-  <div id="source-panel" slot="end" class="input">
-    <div style="display: flex; flex-direction: row; height: 100%; width: 100%;">
-      <textarea style="flex: 1;" id="textarea"></textarea>
-      <div id="codemirror-host" style="flex: 1; overflow: auto; height: 100%; width: 100%;"></div>
+  <div style="position: fixed; display: flex; flex-direction: column; z-index: 999999; bottom: 0; left: calc(var(--row-headers-column-width) + 70px); right: 70px; height: min-content;">
+    <div id="split-top" style="display: none;"></div>
+    <div id="source-panel">
+      <div id="codemirror-host" style="overflow: auto; height: 100%; width: 100%;"></div>
     </div>
-  </div>
-
   </div>
 </main>
 

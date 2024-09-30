@@ -69,6 +69,11 @@ main, .split {
   height: 100%;
 }
 
+.gutter {
+  cursor: row-resize;
+  background: rgb(41, 41, 41);
+}
+
 sl-range {
   --sl-color-primary-500: var(--density-slider-active-color);
   --sl-color-primary-600: var(--density-slider-inactive-color);
@@ -112,17 +117,6 @@ sl-range {
 
 .grid * {
   padding: 3px;
-}
-
-.input {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  background-color: #f9f9f9;
-  color: black;
-}
-.input > * {
-  flex: 1;
 }
 
 .row-headers-bg, .row-header-controls-bg {
@@ -213,8 +207,17 @@ textarea {
   background-color: rgb(59, 59, 59);
   border: 1px solid var(--gb-dark3);
 }
-textarea.data-invalid {
-  border: 1px solid var(--gb-neutral-orange);
+.data-invalid {
+  outline: 1px solid var(--gb-neutral-orange);
+}
+
+.cm-editor {
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  background-color: rgba(40, 40, 40, 0.9);
+}
+.cm-editor .cm-gutters {
+  background: #00000000;
 }
 
 .today-column-background {

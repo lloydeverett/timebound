@@ -49,10 +49,23 @@ $(document).on('alpine:init', function() {
 });
 
 $(function() {
-    Split(['#grid', '#source-panel'], {
+    Split(['#split-top', '#source-panel'], {
         minSize: 0,
         direction: 'vertical',
-        sizes: [70, 30]
+        sizes: [70, 30],
+        elementStyle: function (dimension, size, gutterSize) {
+            return {
+                'min-height': `${size}vh`,
+                'height': `${size}vh`,
+                'max-height': `${size}vh`
+            };
+        },
+        onDragStart: function () {
+            $('#split-top')[0].style.display = 'block';
+        },
+        onDragEnd: function () {
+            $('#split-top')[0].style.display = 'none';
+        }
     })
 
     function getSelectedColumnWidth() {
@@ -64,6 +77,9 @@ $(function() {
 
     function updateGridHeaderStyles() {
         $('#grid-headers-dynamic-styles').html(`
+            body {
+              --row-headers-column-width: ${$('#row-headers-bg').outerWidth()}px};
+            }
             .sticky-against-row-headers {
                 position: sticky;
                 left: calc(${$('#row-headers-bg').outerWidth()}px + var(--sticky-against-row-headers-extra-padding));
@@ -73,12 +89,13 @@ $(function() {
     new ResizeObserver(updateGridHeaderStyles).observe($('#row-headers-bg')[0]);
     updateGridHeaderStyles();
 
-    function updateUrl() {
+    function updateUrl(document) {
         const url = new URL(window.location)
-        url.searchParams.set("data", stringToBase64($('#textarea').val()));
+        url.searchParams.set("data", stringToBase64(document));
         history.replaceState(null, '', url);
     }
 
+    let editor;
     { // load state
         const savedDensity = localStorage.getItem('density');
         if (savedDensity !== null) {
@@ -93,16 +110,23 @@ $(function() {
         let document = '';
         if (searchParam !== null) {
             document = base64ToString(searchParam);
-            $('#textarea').val(base64ToString(searchParam));
         } else {
             const savedData = localStorage.getItem('data');
             if (savedData !== null) {
                 document = savedData;
-                $('#textarea').val(savedData);
-                updateUrl();
+                updateUrl(document);
             }
         }
-        editing.createEditor(document, $('#codemirror-host')[0], () => {});
+        editor = editing.createEditor(document, $('#codemirror-host')[0], function() {
+            const document = getDocument();
+            updateUrl(document);
+            localStorage.setItem('data', document);
+            renderData();
+        });
+    }
+
+    function getDocument() {
+        return editor.state.doc.toString();
     }
 
     let gridScrollLeft = $('.grid')[0].scrollLeft;
@@ -204,7 +228,7 @@ $(function() {
 
         let result;
         try {
-          const obj = yaml.load($('#textarea').val())
+          const obj = yaml.load(getDocument());
           let row = firstDataRow;
           let sections = [];
           for (const objSection of obj.sections) {
@@ -281,10 +305,10 @@ $(function() {
           };
         } catch (err) {
           console.info('Error while processing input:', err);
-          $('#textarea').toggleClass('data-invalid', true);
+          $('#codemirror-host').toggleClass('data-invalid', true);
           return;
         }
-        $('#textarea').toggleClass('data-invalid', false);
+        $('#codemirror-host').toggleClass('data-invalid', false);
 
         if (result.egSprintStart !== null && result.egSprintIndex !== null) {
             store.egSprintStart = result.egSprintStart;
@@ -299,11 +323,6 @@ $(function() {
             document.title = result.title + ' - datum';
         }
     }
-    $('#textarea').on('input', function() {
-        updateUrl();
-        localStorage.setItem('data', $('#textarea').val());
-        renderData();
-    });
     renderData();
 
     let animating = false;
