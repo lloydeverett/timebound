@@ -49,6 +49,12 @@ $(document).on('alpine:init', function() {
 });
 
 $(function() {
+    Split(['#grid', '#source-panel'], {
+        minSize: 0,
+        direction: 'vertical',
+        sizes: [70, 30]
+    })
+
     function getSelectedColumnWidth() {
         return densitySliderValueToColumnWidth($('#density-range')[0].value);
     }

@@ -65,11 +65,7 @@ body {
   --sticky-against-row-headers-extra-padding: 3px;
 }
 
-main, sl-split-panel {
-  height: 100%;
-}
-
-sl-split-panel > * {
+main, .split {
   height: 100%;
 }
 
@@ -241,6 +237,9 @@ textarea.data-invalid {
   padding-left: calc(var(--row-height) * 0.2);
 }
 
+.cm-editor {
+  font-size: 0.9em;
+}
 .cm-editor * {
   font-family: '0xProto', monospace;
 }
