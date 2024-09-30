@@ -83,15 +83,20 @@ $(function() {
             $('#row-height-range')[0].value = savedRowHeight;
         }
         const searchParam = new URL(window.location).searchParams.get('data');
+
+        let document = '';
         if (searchParam !== null) {
+            document = base64ToString(searchParam);
             $('#textarea').val(base64ToString(searchParam));
         } else {
             const savedData = localStorage.getItem('data');
             if (savedData !== null) {
+                document = savedData;
                 $('#textarea').val(savedData);
                 updateUrl();
             }
         }
+        editing.createEditor(document, $('#codemirror-host')[0], () => {});
     }
 
     let gridScrollLeft = $('.grid')[0].scrollLeft;
@@ -174,7 +179,6 @@ $(function() {
     function renderData() {
         const readTags = function(str) {
             return str.split(' ').filter(s => s.length > 0).flatMap(s => {
-                console.log(str);
                 let match = s.match(/^(.+)\*(\d+)$/);
                 if (match) {
                     let count = Number(match[2]);

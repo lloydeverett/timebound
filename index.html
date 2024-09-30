@@ -15,7 +15,9 @@
   <script src="lib/jquery-3.7.1.min.js"></script>
   <script src="yaml/dist/index.js"></script>
   <script src="utils.js"></script>
+  <script src="editing/build/editing.js"></script>
   <script src="main.js"></script>
+  <script defer src="lib/split.js"></script>
   <script defer src="lib/alpinejs.min.js"></script>
   <script defer src="shoelace/dist/index.js"></script>
 
@@ -213,11 +215,17 @@
 
   <!-- source editor -->
   <div slot="end" class="input">
-    <textarea id="textarea"></textarea>
+    <div style="display: flex; flex-direction: row;">
+      <textarea style="flex: 1;" id="textarea"></textarea>
+    </div>
   </div>
 
   </sl-split-panel>
 </main>
+
+<div style="position: fixed; inset: 0; z-index: 999999;">
+      <div id="codemirror-host" style="flex: 1;"></div>
+</div>
 
 </body>
 

@@ -240,3 +240,19 @@ textarea.data-invalid {
 .entry-content-leftmost {
   padding-left: calc(var(--row-height) * 0.2);
 }
+
+.cm-editor * {
+  font-family: '0xProto', monospace;
+}
+
+.cm-editor .cm-cursorLayer, .cm-editor .cm-cursorLayer .cm-fat-cursor {
+  outline-color: #ebdbb22d;
+  background-color: #ebdbb22d;
+}
+.cm-editor.cm-focused .cm-cursorLayer, .cm-editor.cm-focused .cm-cursorLayer .cm-fat-cursor {
+  outline-color: #ebdbb2d5;
+  background-color: #ebdbb2d5;
+}
+.cm-vim-panel input {
+  color: white;
+}
