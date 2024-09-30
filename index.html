@@ -73,7 +73,7 @@
                     <div x-bind:style="`z-index: 50; grid-column: ${column(fromYear, year, month, 1)}; grid-row: 4 / -1; ${yearIndex === 0 && month === 1 ? '' : 'border-left: 1px solid var(--month-border-color);'}`"></div>
                     <!-- row backgrounds for day columns -->
                     <div class="sticky-column-header" x-bind:style="`--row: 4; grid-column: ${column(fromYear, year, month, 1)} / ${column(fromYear, year, month, daysInMonth(year, month)) + 1}; background: var(--days-color);`"></div>
-                    <div class="sticky-column-header" x-bind:style="`--row: 5; grid-column: ${column(fromYear, year, month, 1)} / ${column(fromYear, year, month, daysInMonth(year, month)) + 1}; background: var(--weekday-color);`"></div>
+                    <div class="sticky-column-header" x-bind:style="`--row: 5; grid-column: ${column(fromYear, year, month, 1)} / ${column(fromYear, year, month, daysInMonth(year, month)) + 1}; background: var(--weekday-color); z-index: 9999; box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;`"></div>
                     <!-- days in month -->
                     <template x-for="day in range(1, daysInMonth(year, month))">
                       <div x-bind:class="`day-column-header-container ${day === 1 ? 'day-column-header-container-first' : ''}`" style="display: contents;">
