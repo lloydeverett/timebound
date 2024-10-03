@@ -50,7 +50,7 @@
 }">
 
   <!-- grid -->
-  <div id="grid" class="grid" x-bind:style="`width: 100%; height: 100%; grid-template-rows: repeat(5, var(--header-row-height)) calc(var(--header-row-height) * 1.3) ${sectionRowHeightMultipliers(sections, rowCount).map(s => 'calc(var(--row-height) * ' + s + ')').join(' ')} 400px auto;`">
+  <div id="grid" class="grid" x-bind:style="`width: 100%; height: 100%; grid-template-rows: repeat(5, var(--header-row-height)) calc(var(--header-row-height) * 1.3) ${sectionRowHeightMultipliers(sections, rowCount + 1).map(s => 'calc(var(--row-height) * ' + s + ')').join(' ')} 400px auto;`">
 
     <!-- dummy div for measuring the width of the grid -->
     <div id="dummy-full-width-grid-row" x-bind:style="`grid-row: 1; grid-column: 1 / ${lastColumn + 1}`"></div>
