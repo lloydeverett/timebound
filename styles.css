@@ -126,6 +126,11 @@ sl-range {
   padding: 3px;
 }
 
+.sticky-against-row-headers {
+  position: sticky;
+  left: calc(var(--row-headers-column-width) + var(--sticky-against-row-headers-extra-padding));
+}
+
 .row-headers-bg {
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);

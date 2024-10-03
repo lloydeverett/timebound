@@ -76,19 +76,11 @@ $(function() {
         $('#density-range')[0].value = columnWidthToDensitySliderValue(newValue);
     }
 
-    function updateGridHeaderStyles() {
-        $('#grid-headers-dynamic-styles').html(`
-            body {
-              --row-headers-column-width: ${$('#row-headers-bg').outerWidth()}px;
-            }
-            .sticky-against-row-headers {
-                position: sticky;
-                left: calc(${$('#row-headers-bg').outerWidth()}px + var(--sticky-against-row-headers-extra-padding));
-            }
-        `);
+    function updateRowHeadersColumnWidth() {
+        document.body.style.setProperty('--row-headers-column-width', `${$('#row-headers-bg').outerWidth()}px`);
     }
-    new ResizeObserver(updateGridHeaderStyles).observe($('#row-headers-bg')[0]);
-    updateGridHeaderStyles();
+    new ResizeObserver(updateRowHeadersColumnWidth).observe($('#row-headers-bg')[0]);
+    updateRowHeadersColumnWidth();
 
     function updateUrl(document) {
         const url = new URL(window.location)
@@ -146,6 +138,7 @@ $(function() {
         document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
     }
     new ResizeObserver(measureScrollbarWidth).observe($('#dummy-scrollbar-measurement-div')[0]);
+    measureScrollbarWidth();
 
     let gridScrollLeft = $('.grid')[0].scrollLeft;
     let lastGridScrollLeftSampleMs = +new Date();
@@ -182,7 +175,7 @@ $(function() {
                 }
             `;
         }
-        $('#density-dynamic-styles').html(html);
+        $('#column-density-dynamic-styles').html(html);
 
         const pos = (gridScrollLeft + ($(window).width() / 2)) / oldGridWidth;
         const newGridWidth = $('#dummy-full-width-grid-row').width();
@@ -197,20 +190,16 @@ $(function() {
     });
     updateDensityStyles();
 
-    function updateRowHeightStyles() {
+    function updateRowHeight() {
         const rowHeight = $('#row-height-range')[0].value;
         Alpine.store('grid').rowHeight = rowHeight;
-        $('#row-height-dynamic-styles').html(`
-            body {
-              --row-height: ${rowHeight}px;
-            }
-        `);
+        document.body.style.setProperty('--row-height', `${rowHeight}px`);
     }
     $('#row-height-range').on('input', function() {
-        updateRowHeightStyles();
+        updateRowHeight();
         localStorage.setItem('rowHeight', $('#row-height-range')[0].value);
     });
-    updateRowHeightStyles();
+    updateRowHeight();
 
     function onYearsChanged() {
         Alpine.store('grid').fromYear = parseInt($('#fromYear-select').val());
