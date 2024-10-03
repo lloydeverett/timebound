@@ -117,7 +117,7 @@ $(function() {
                 updateUrl(document);
             }
         }
-        editor = editing.createEditor(document, $('#codemirror-host')[0], function() {
+        editor = editing.createEditor(document, $('#codemirror-host')[0], { enableVimMode: true }, function() {
             const document = getDocument();
             updateUrl(document);
             localStorage.setItem('data', document);
