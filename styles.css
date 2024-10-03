@@ -78,7 +78,7 @@ main, .split {
   background: rgb(41, 41, 41);
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
-  margin-right: 1px;
+  margin-right: calc(min(var(--scrollbar-width), 1px));
 }
 
 sl-range {
