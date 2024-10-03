@@ -55,9 +55,10 @@ $(function() {
         sizes: [70, 30],
         elementStyle: function (dimension, size, gutterSize) {
             return {
-                'min-height': `${size}vh`,
-                'height': `${size}vh`,
-                'max-height': `${size}vh`
+                'min-height': `calc(${size}vh - ${gutterSize}px - var(--scrollbar-width))`,
+                'height': `calc(${size}vh - ${gutterSize}px - var(--scrollbar-width))`,
+                'max-height': `calc(${size}vh - ${gutterSize}px - var(--scrollbar-width))`,
+                'position': 'relative'
             };
         },
         onDragStart: function () {
@@ -96,38 +97,55 @@ $(function() {
     }
 
     let editor;
+    let vimModeEnabled;
     { // load state
         const savedDensity = localStorage.getItem('density');
         if (savedDensity !== null) {
             setSelectedColumnWidth(savedDensity);
         }
+        vimModeEnabled = localStorage.getItem('vimModeEnabled') === 'true';
+        $(document.body).toggleClass('vim-mode', vimModeEnabled);
         const savedRowHeight = localStorage.getItem('rowHeight');
         if (savedRowHeight !== null) {
             $('#row-height-range')[0].value = savedRowHeight;
         }
         const searchParam = new URL(window.location).searchParams.get('data');
 
-        let document = '';
+        let src = '';
         if (searchParam !== null) {
-            document = base64ToString(searchParam);
+            src = base64ToString(searchParam);
         } else {
             const savedData = localStorage.getItem('data');
             if (savedData !== null) {
-                document = savedData;
-                updateUrl(document);
+                src = savedData;
+                updateUrl(src);
             }
         }
-        editor = editing.createEditor(document, $('#codemirror-host')[0], { enableVimMode: true }, function() {
-            const document = getDocument();
-            updateUrl(document);
-            localStorage.setItem('data', document);
+        editor = editing.createEditor(src, $('#codemirror-host')[0], { enableVimMode: vimModeEnabled }, function() {
+            const src = getSrc();
+            updateUrl(src);
+            localStorage.setItem('data', src);
             renderData();
         });
     }
 
-    function getDocument() {
+    function getSrc() {
         return editor.state.doc.toString();
     }
+
+    $('#vim-toggle-button').on('click', function() {
+        vimModeEnabled = !vimModeEnabled;
+        localStorage.setItem('vimModeEnabled', vimModeEnabled ? 'true' : 'false');
+        editing.setVimModeEnabled(editor, vimModeEnabled);
+        $(document.body).toggleClass('vim-mode', vimModeEnabled);
+    });
+
+    function measureScrollbarWidth() {
+        const scrollDiv = $('#dummy-scrollbar-measurement-div')[0];
+        const scrollbarWidth = scrollDiv.offsetHeight - scrollDiv.clientHeight;
+        document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+    }
+    new ResizeObserver(measureScrollbarWidth).observe($('#dummy-scrollbar-measurement-div')[0]);
 
     let gridScrollLeft = $('.grid')[0].scrollLeft;
     let lastGridScrollLeftSampleMs = +new Date();
@@ -228,7 +246,7 @@ $(function() {
 
         let result;
         try {
-          const obj = yaml.load(getDocument());
+          const obj = yaml.load(getSrc());
           let row = firstDataRow;
           let sections = [];
           for (const objSection of obj.sections) {

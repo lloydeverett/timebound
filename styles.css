@@ -69,9 +69,16 @@ main, .split {
   height: 100%;
 }
 
+.gutter-bg {
+  background: rgb(41, 41, 41);
+}
+
 .gutter {
   cursor: row-resize;
   background: rgb(41, 41, 41);
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  margin-right: 1px;
 }
 
 sl-range {
@@ -264,4 +271,15 @@ textarea {
 }
 .cm-vim-panel input {
   color: white;
+}
+
+#vim-toggle-button {
+  cursor: pointer;
+  margin-right: 4px;
+  fill: #ebdbb240;
+  transition: fill ease 0.3s;
+}
+
+.vim-mode #vim-toggle-button {
+  fill: #ebdbb28c;
 }
