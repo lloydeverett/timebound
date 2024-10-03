@@ -313,18 +313,18 @@ function calculateSlotOccupancy(fromYear, toYear, sections, entries) {
                     columnDelta += deltas[i].delta;
 
                     let currentOccupiedSlots;
-                    if (deltas[i].entry.currentOccupiedSlots.has(item.index)) {
-                        currentOccupiedSlots = deltas[i].entry.currentOccupiedSlots.get(item.index);
+                    if (deltas[i].entry.currentOccupiedSlots.has(item)) {
+                        currentOccupiedSlots = deltas[i].entry.currentOccupiedSlots.get(item);
                     } else {
                         currentOccupiedSlots = [];
-                        deltas[i].entry.currentOccupiedSlots.set(item.index, currentOccupiedSlots);
+                        deltas[i].entry.currentOccupiedSlots.set(item, currentOccupiedSlots);
                     }
                     let occupiedSlots;
-                    if (deltas[i].entry.occupiedSlots.has(item.index)) {
-                        occupiedSlots = deltas[i].entry.occupiedSlots.get(item.index);
+                    if (deltas[i].entry.occupiedSlots.has(item)) {
+                        occupiedSlots = deltas[i].entry.occupiedSlots.get(item);
                     } else {
                         occupiedSlots = [];
-                        deltas[i].entry.occupiedSlots.set(item.index, occupiedSlots);
+                        deltas[i].entry.occupiedSlots.set(item, occupiedSlots);
                     }
 
                     if (deltas[i].delta < 0) { // consume slot
@@ -360,4 +360,5 @@ function calculateSlotOccupancy(fromYear, toYear, sections, entries) {
     for (const entry of entries) {
         delete entry.currentOccupiedSlots;
     }
+    // we should now have set occupiedSlots and usageCurve on each item we processed
 }
