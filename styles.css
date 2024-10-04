@@ -23,17 +23,6 @@ html {
   --density-slider-inactive-color:  var(--p1);
   --selection-color:                var(--p1);
   --weekend-color:                 #3d3a38;
-
-  /* --years-color:                   #2c3e50; */
-  /* --month-color:                   #2c3e50; */
-  /* --sprint-color:                  #4a4a95; */
-  /* --weekday-color:                 #303952; */
-  /* --days-color:                    #303952; */
-  /* --today-color:                   #3e64bd; */
-  /* --today-button-color:            #4168c4; */
-  /* --today-header-color:            #3657a4; */
-  /* --today-border-color:            #3657a4; */
-  /* --density-slider-inactive-color: #4b79e5; */
 }
 
 .paletted::selection, .paletted *::selection {
