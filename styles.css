@@ -41,7 +41,8 @@ html {
 }
 
 .tight-font {
-  font-family: 'Inter Tight', 'Oxygen Mono', 'Courier', monospace;
+  font-weight: 500;
+  font-family: 'Inter Tight', sans-serif;
 }
 
 .entries-section *, .row-headers * {
@@ -50,7 +51,8 @@ html {
 
 body {
   height: 100%;
-  font-family: 'Inter Tight', 'Oxygen Mono', 'Courier', monospace;
+  font-weight: 500;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 0.9rem;
   background: #32302f;
   color: white;
@@ -105,11 +107,11 @@ sl-range {
 
 .row-header-section, .entries-section {
   font-weight: 500;
-  font-family: 'Inter', 'Inter Tight', 'Oxygen Mono', 'Courier', monospace;
+  font-family: 'Inter', 'Inter Tight', sans-serif;
 }
 
 .row-section-header {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .grid {
@@ -185,7 +187,7 @@ sl-range {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
+  font-weight: 600;
   border-radius: 4px;
   padding: 6px 0;
   cursor: pointer;
@@ -219,13 +221,6 @@ sl-range {
   margin-left: calc(-1 * max(17px - 100%, 0px)); /* right align when overflowing */
 }
 
-textarea {
-  font-family: 'Oxygen Mono', 'Courier', monospace;
-  border: none;
-  outline: none;
-  background-color: rgb(59, 59, 59);
-  border: 1px solid var(--gb-dark3);
-}
 .data-invalid {
   outline: 1px solid var(--gb-neutral-orange);
 }
