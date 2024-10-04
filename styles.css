@@ -245,6 +245,7 @@ sl-range {
 
 .cm-editor {
   font-size: 0.9em;
+  min-height: 100%;
 }
 .cm-editor * {
   font-family: '0xProto', monospace;
