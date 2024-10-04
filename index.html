@@ -35,7 +35,7 @@
 
 <main x-data="{
   get sections()            { return $store.grid.sections; },
-  get rowCount()            { return $store.grid.rowCount; },
+  get lastItemEndIndex()    { return $store.grid.lastItemEndIndex; },
   get fromYear()            { return $store.grid.fromYear; },
   get toYear()              { return $store.grid.toYear; },
   get abbreviateSprints()   { return $store.grid.abbreviateSprints; },
@@ -50,7 +50,7 @@
 }">
 
   <!-- grid -->
-  <div id="grid" class="grid" x-bind:style="`width: 100%; height: 100%; grid-template-rows: repeat(5, var(--header-row-height)) calc(var(--header-row-height) * 1.3) ${sectionRowHeightMultipliers(sections, rowCount + 1).map(s => 'calc(var(--row-height) * ' + s + ')').join(' ')} 400px auto;`">
+  <div id="grid" class="grid" x-bind:style="`width: 100%; height: 100%; grid-template-rows: repeat(5, var(--header-row-height)) calc(var(--header-row-height) * 1.3) ${sectionRowHeightMultipliers(sections, lastItemEndIndex).map(s => 'calc(var(--row-height) * ' + s + ')').join(' ')} 400px auto;`">
 
     <!-- dummy div for measuring the width of the grid -->
     <div id="dummy-full-width-grid-row" x-bind:style="`grid-row: 1; grid-column: 1 / ${lastColumn + 1}`"></div>
@@ -71,7 +71,7 @@
                     </div>
                     <!-- border for each month -->
                     <div x-bind:style="`z-index: 50; grid-column: ${column(fromYear, year, month, 1)}; grid-row: 4 / -1; ${yearIndex === 0 && month === 1 ? '' : 'border-left: 1px solid var(--month-border-color);'}`"></div>
-                    <!-- row backgrounds for day columns -->
+                    <!-- column backgrounds for day columns -->
                     <div class="sticky-column-header" x-bind:style="`--row: 4; grid-column: ${column(fromYear, year, month, 1)} / ${column(fromYear, year, month, daysInMonth(year, month)) + 1}; background: var(--days-color);`"></div>
                     <div class="sticky-column-header" x-bind:style="`--row: 5; grid-column: ${column(fromYear, year, month, 1)} / ${column(fromYear, year, month, daysInMonth(year, month)) + 1}; background: var(--weekday-color); z-index: 9999; box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;`"></div>
                     <!-- days in month -->
@@ -156,13 +156,24 @@
           </template>
           <!-- item backgrounds -->
           <template x-for="item in (sections, section.items)">
-            <div x-bind:style="`opacity: ${item.bg !== null ? '1' : (isCompact(sections, rowCount, rowHeight, item) ? '1' : '0')}; position: static; z-index: 999; grid-row: ${item.index} / ${item.endIndex + 1}; grid-column: 1 / ${lastColumn + 1}; background: ${item.bg === null ? ('color-mix(in srgb, var(--nl-turkish-aqua), black 20%)') : ('var(--' + item.bg + ')')};`"></div>
+            <div x-bind:style="`opacity: ${item.bg !== null ? '1' : (isCompact(rowHeight, item) ? '1' : '0')}; position: static; z-index: 998; grid-row: ${item.index} / ${item.endIndex + 1}; grid-column: 1 / ${lastColumn + 1}; background: ${item.bg === null ? ('color-mix(in srgb, var(--nl-turkish-aqua), black 20%)') : ('var(--' + item.bg + ')')};`"></div>
           </template>
           <!-- slot headers -->
-          <template x-for="elem in (sections, section.items && section.items.filter(i => i.slots > 1).flatMap(i => range(0, i.slots - 1).map(s => ({ slot: s, item: i }))))">
-            <div x-bind:class="'tight-font row-header ' + (elem.item.header ? 'row-section-header' : '')" x-bind:style="`opacity: ${isCompact(sections, rowCount, rowHeight, elem.item) ? '0' : '1'}; grid-row: ${elem.item.index + elem.slot}; justify-content: flex-end;`">
+          <template x-for="elem in (sections, section.items && section.items.filter(i => i.slots > 1 || (i.overflowSlotCount > 0 && i.slots >= 1)).flatMap(i => range(0, i.slots - 1).map(s => ({ slot: s, item: i }))))">
+            <div x-bind:class="'tight-font row-header ' + (elem.item.header ? 'row-section-header' : '')" x-bind:style="`opacity: ${isCompact(rowHeight, elem.item) ? '0' : '1'}; grid-row: ${elem.item.index + elem.slot}; justify-content: flex-end;`">
               <div class="row-header-text" style="min-width: 10px; text-align: center;" x-text="elem.slot + 1"></div>
             </div>
+          </template>
+          <!-- overflow slot headers -->
+          <template x-for="elem in (sections, section.items && section.items.filter(i => i.overflowSlotCount > 0).flatMap(i => range(0, i.overflowSlotCount - 1).map(s => ({ slot: s, item: i }))))">
+            <div x-bind:class="'tight-font row-header ' + (elem.item.header ? 'row-section-header' : '')" x-bind:style="`color: var(--se-sizzling-red); opacity: ${isCompact(rowHeight, elem.item) ? '0' : '1'}; grid-row: ${elem.item.index + elem.slot + elem.item.slots}; justify-content: flex-end;`">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-circle"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <div class="row-header-text" style="min-width: 10px; text-align: center;" x-text="elem.slot + elem.item.slots + 1"></div>
+            </div>
+          </template>
+          <!-- overflow slot backgrounds -->
+          <template x-for="item in (sections, section.items && section.items.filter(i => i.overflowSlotCount > 0))">
+            <div x-bind:style="`opacity: 0.7; position: static; z-index: 999; grid-row: ${item.endIndex + 1 - item.overflowSlotCount} / ${item.endIndex + 1}; grid-column: 1 / ${lastColumn + 1}; background: var(--fr-jalapeno-red);`"></div>
           </template>
           <!-- section border across grid -->
           <div class="section-top-border section-bottom-border" x-bind:style="`position: static; z-index: 1; grid-row: ${section.items[0].index} / ${section.items.slice(-1)[0].endIndex + 1}; grid-column: 1 / ${lastColumn + 1};`"></div>
@@ -185,16 +196,16 @@
       <template x-for="(entry, entryIndex) in entries.map(e => expandDefaults(sections, e))">
         <div style="display: contents;">
           <!-- main block -->
-          <div x-bind:style="`${entries, ''} display: flex; flex-direction: row; align-items: center; padding: 0 6px; grid-row: ${readUserSpecifiedStartRow(sections, firstDataRow, rowCount, entry.row)} / ${readUserSpecifiedEndRow(sections, firstDataRow, rowCount, entry.toRow === null ? entry.row : entry.toRow)}; grid-column: ${readUserSpecifiedStartColumn(fromYear, toYear, entry.col)}${entry.toCol === null ? '' : ' / ' + readUserSpecifiedEndColumn(fromYear, toYear, entry.toCol)}; border-radius: 8px; background: var(--${entry.bg !== null ? entry.bg : 'fl-belize-hole'}); border: 1px solid #00000020; z-index: ${2000 + entryIndex}; ${entry.style !== null ? entry.style : ''}`">
+          <div x-bind:style="`${entries, ''} display: flex; flex-direction: row; align-items: center; padding: 0 6px; grid-row: ${readUserSpecifiedStartRow(sections, firstDataRow, lastItemEndIndex, entry.row)} / ${readUserSpecifiedEndRow(sections, firstDataRow, lastItemEndIndex, entry.toRow === null ? entry.row : entry.toRow)}; grid-column: ${readUserSpecifiedStartColumn(fromYear, toYear, entry.col)}${entry.toCol === null ? '' : ' / ' + readUserSpecifiedEndColumn(fromYear, toYear, entry.toCol)}; border-radius: 8px; background: var(--${entry.bg !== null ? entry.bg : 'fl-belize-hole'}); border: 1px solid #00000020; z-index: ${2000 + entryIndex}; ${entry.style !== null ? entry.style : ''}`">
             <div class="entry-text entry-content-leftmost" x-text="entry.text"></div>
           </div>
           <!-- tag includes -->
           <template x-for="item in (entries, includesOfEntry(sections, entry))">
             <!-- consumption of slot ranges -->
-            <template x-for="slotRange in (entries, entry.occupiedSlots.get(item) && continguousRanges(entry.occupiedSlots.get(item)))">
+            <template x-for="slotRange in (entries, entry.occupiedSlots.get(item) && contiguousRanges(occupiedSlotsToSubrowIndices(item.slots, entry.occupiedSlots.get(item))))">
               <div style="display: contents;">
-                <div x-bind:style="`position: relative; grid-row: ${item.index + slotRange[0]} / ${item.index + slotRange[1] + 1}; grid-column: ${readUserSpecifiedStartColumn(fromYear, toYear, entry.col)}${entry.toCol === null ? '' : ' / ' + readUserSpecifiedEndColumn(fromYear, toYear, entry.toCol)}; ${!isCompact(sections, rowCount, rowHeight, item) ? 'border-radius: 8px;' : ''} border: 1px solid #00000020; background: var(--${entry.bg !== null ? entry.bg : 'fl-belize-hole'}); z-index: ${1000 + entryIndex}; ${entry.style !== null ? entry.style : ''}`">
-                  <div x-bind:style="`display: flex; opacity: ${!isCompact(sections, rowCount, rowHeight, item) ? '1' : '0'}; position: absolute; inset: 0; flex-direction: row; align-items: center; padding: 0 6px;`">
+                <div x-bind:style="`position: relative; grid-row: ${item.index + slotRange[0]} / ${item.index + slotRange[1] + 1}; grid-column: ${readUserSpecifiedStartColumn(fromYear, toYear, entry.col)}${entry.toCol === null ? '' : ' / ' + readUserSpecifiedEndColumn(fromYear, toYear, entry.toCol)}; ${!isCompact(rowHeight, item) ? 'border-radius: 8px;' : ''} border: 1px solid #00000020; background: var(--${entry.bg !== null ? entry.bg : 'fl-belize-hole'}); z-index: ${1000 + entryIndex}; ${entry.style !== null ? entry.style : ''}`">
+                  <div x-bind:style="`display: flex; opacity: ${!isCompact(rowHeight, item) ? '1' : '0'}; position: absolute; inset: 0; flex-direction: row; align-items: center; padding: 0 6px;`">
                     <div style="border-radius: 8px; position: absolute; inset: 1px; background: #312e2a9e; z-index: -1;"></div>
                     <svg class="entry-content-leftmost" style="min-width: 10.5px; min-height: 12px; height: 12px; fill: white;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 80L0 229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7L48 32C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
                     <template x-if="slotRange && entry.occupiedSlots.get(item) && entry.occupiedSlots.get(item).length > 1">
@@ -213,7 +224,7 @@
   </div>
 
   <!-- source editor -->
-  <div style="overflow: hidden; position: fixed; display: flex; flex-direction: column; z-index: 999999; bottom: calc(max(var(--scrollbar-width) - 1px, 0px)); left: calc(var(--row-headers-column-width) + 70px); right: 70px; height: min-content;">
+  <div style="overflow: hidden; position: fixed; display: flex; flex-direction: column; z-index: 999999; bottom: calc(max(var(--scrollbar-width) - 1px, 0px)); left: calc(var(--row-headers-column-width) + 15px); margin: 0 auto; right: 15px; height: min-content; max-width: 1200px;">
     <div id="split-top" style="display: none;"></div>
     <div id="source-panel" style="display: flex; flex-direction: column; align-items: stretch;">
       <div style="flex: 1; display: flex; flex-direction: row; overflow: scroll; position: relative;">

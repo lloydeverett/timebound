@@ -79,7 +79,25 @@ function range(start, end) {
     return result;
 }
 
-function continguousRanges(values) {
+function occupiedSlotsToSubrowIndices(slotCount, values) {
+    let max = 0;
+    {
+        const mathMax = Math.max(...values);
+        if (mathMax > 0) {
+            max = mathMax;
+        }
+    }
+
+    let results = [...values];
+    for (let i = 0; i < results.length; i++) {
+        if (results[i] < 0) {
+            results[i] = slotCount - results[i] - 1;
+        }
+    }
+    return results;
+}
+
+function contiguousRanges(values) {
     const sorted = [...values];
     sorted.sort((a, b) => a - b);
     let results = []
@@ -197,7 +215,7 @@ function readUserSpecifiedEndColumn(fromYear, toYear, col) {
     return column(fromYear, date.getFullYear(), date.getMonth() + 1, date.getDate()) + 1;
 }
 
-function readUserSpecifiedStartRow(sections, firstDataRow, rowCount, row) {
+function readUserSpecifiedStartRow(sections, firstDataRow, lastItemEndIndex, row) {
     if (row.match(/^[A-Za-z]/)) {
         const resolvedItem = resolveRowRefWithPossibleSubdivision(sections, row);
         if (resolvedItem !== null) {
@@ -210,8 +228,8 @@ function readUserSpecifiedStartRow(sections, firstDataRow, rowCount, row) {
     return firstDataRow + Number(row) - 1;
 }
 
-function readUserSpecifiedEndRow(sections, firstDataRow, rowCount, row) {
-    if (row === '-1') { return rowCount + 2; }
+function readUserSpecifiedEndRow(sections, firstDataRow, lastItemEndIndex, row) {
+    if (row === '-1') { return lastItemEndIndex + 2; }
     if (row.match(/^[A-Za-z]/)) {
         const resolvedItem = resolveRowRefWithPossibleSubdivision(sections, row);
         if (resolvedItem !== null) {
@@ -249,9 +267,9 @@ function columnWidthToDensitySliderValue(columnWidth) {
     return Math.sqrt(columnWidth);
 }
 
-function sectionRowHeightMultipliers(sections, rowCount) {
+function sectionRowHeightMultipliers(sections, lastItemEndIndex) {
     let result = [];
-    for (let i = firstDataRow; i < rowCount; i++) { result.push(1); }
+    for (let i = firstDataRow; i <= lastItemEndIndex; i++) { result.push(1); }
     for (const section of sections) {
         for (const item of section.items) {
             if (item.height === null) { continue; }
@@ -263,7 +281,7 @@ function sectionRowHeightMultipliers(sections, rowCount) {
     return result;
 }
 
-function isCompact(sections, rowCount, rowHeight, item) {
+function isCompact(rowHeight, item) {
     if (item.compact !== null) {
         return item.compact;
     }
@@ -355,10 +373,34 @@ function calculateSlotOccupancy(fromYear, toYear, sections, entries) {
                 usageCurve.push({ col: col, usage: usage });
             }
             item.usageCurve = usageCurve;
+            item.overflowSlotCount = minSlot === 0 ? 0 : -minSlot; /* -minSlot, but no negative zero please */
         }
     }
     for (const entry of entries) {
         delete entry.currentOccupiedSlots;
     }
-    // we should now have set occupiedSlots and usageCurve on each item we processed
+    // we should now have set:
+    //  - an occupiedSlots map on each entry (item -> array of slot indices)
+    //  - a usageCurve on each item
+    //  - an overflowSlotCount on each item
+}
+
+// expected to be called after calculateSlotOccupancy:
+// - adjust item indices to account for overflow rows
+// - add overflow start and end index for each item with overflow
+// - finally, return the end index of the last item of the last section, or otherwise firstDataRow
+// nb: unlike the others, this function isn't pure in that it mutates its input paramaters by adding occupancy info
+//     it should otherwise be stateless / have no side effects though
+function updateItemIndicesToAccountForOverflowSlots(fromYear, toYear, sections) {
+    let indexOffset = 0;
+    let lastEndIndex = firstDataRow;
+    for (const section of sections) {
+        for (const item of section.items) {
+            item.index += indexOffset;
+            item.endIndex += indexOffset + item.overflowSlotCount;
+            lastEndIndex = item.endIndex;
+            indexOffset += item.overflowSlotCount;
+        }
+    }
+    return lastEndIndex;
 }

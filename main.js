@@ -28,7 +28,7 @@ $(document).on('alpine:init', function() {
   const thisYear = today.getFullYear();
   Alpine.store('grid', {
       firstDataRow: firstDataRow,
-      rowCount: firstDataRow,
+      lastItemEndIndex: firstDataRow,
       sections: [],
       entries: [],
       egSprintStart: '2024-01-01',
@@ -279,9 +279,11 @@ $(function() {
 
           let egSprintStart = null;
           let egSprintIndex = null;
+          let sprintLength = null;
           if ('sprints' in obj) {
             egSprintStart = String(obj.sprints.egSprintStart);
             egSprintIndex = Number(obj.sprints.egSprintIndex);
+            sprintLength = Number(obj.sprints.sprintLength);
           }
 
           let entries = []
@@ -302,13 +304,16 @@ $(function() {
 
           calculateSlotOccupancy(store.fromYear, store.toYear, sections, entries);
 
+          let lastItemEndIndex = updateItemIndicesToAccountForOverflowSlots(store.fromYear, store.toYear, sections);
+
           result = {
             sections: sections,
             entries: entries,
-            rowCount: row - 1,
+            lastItemEndIndex: lastItemEndIndex,
             title: title,
             egSprintStart: egSprintStart,
-            egSprintIndex: egSprintIndex
+            egSprintIndex: egSprintIndex,
+            sprintLength: sprintLength
           };
         } catch (err) {
           console.info('Error while processing input:', err);
@@ -317,14 +322,15 @@ $(function() {
         }
         $('#codemirror-host').toggleClass('data-invalid', false);
 
-        if (result.egSprintStart !== null && result.egSprintIndex !== null) {
+        if (result.egSprintStart !== null && result.egSprintIndex !== null && result.sprintLength !== null) {
             store.egSprintStart = result.egSprintStart;
             store.egSprintIndex = result.egSprintIndex;
+            store.sprintLength = result.sprintLength;
         }
         // nb: order we set these is important; beware reactivity bugs
         store.entries = result.entries;
         store.sections = result.sections;
-        store.rowCount = result.rowCount;
+        store.lastItemEndIndex = result.lastItemEndIndex;
 
         if (result.title) {
             document.title = result.title + ' - datum';
