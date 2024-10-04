@@ -1,0 +1,13 @@
+{
+    "name": "datum",
+    "version": "1.0.0",
+    "devDependencies": {
+      "@web/rollup-plugin-html": "^2.3.0",
+      "rollup": "^4.20.0"
+    },
+    "scripts": {
+        "build": "./build-modules.sh && ./node_modules/.bin/rollup -c",
+        "bundle": "./bundle.sh"
+    }
+}
+  
