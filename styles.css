@@ -274,6 +274,10 @@ sl-range {
   fill: #ebdbb28c;
 }
 
+.hide-for-narrow-column-density {
+  opacity: 1;
+  transition: opacity ease 0.3s;
+}
 .narrow-column-density .hide-for-narrow-column-density {
-  display: none;
+  opacity: 0;
 }
