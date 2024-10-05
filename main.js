@@ -8,6 +8,7 @@ const dayVisibilityBreakpoints = [
     [/* <= */ 12 /* px */,    ['3n + 1', '3n + 2']],
     [/* <= */ 20 /* px */,    ['2n + 1']],
 ];
+const narrowColumnDensityBreakpoint = /* <= */ 9 /* px */; // hide elements like sprint borders on this condition
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
@@ -183,6 +184,8 @@ $(function() {
         $('.grid')[0].scrollLeft = gridScrollLeft;
 
         Alpine.store('grid').abbreviateSprints = columnWidth <= abbreviateSprintsBreakpoint;
+
+        $(document.body).toggleClass('narrow-column-density', columnWidth <= narrowColumnDensityBreakpoint);
     }
     $('#density-range').on('input', function() {
         updateDensityStyles();

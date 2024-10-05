@@ -87,7 +87,7 @@
                         </div>
                         <!-- background for weekends -->
                         <template x-if="isWeekend(year, month, day)">
-                          <div class="day-of-week-column-header" x-bind:style="`grid-column: ${column(fromYear, year, month, day)}; grid-row: 6 / -1; background: var(--weekend-color);`"></div>
+                          <div class="hide-for-narrow-column-density day-of-week-column-header" x-bind:style="`grid-column: ${column(fromYear, year, month, day)}; grid-row: 6 / -1; background: var(--weekend-color);`"></div>
                         </template>
                       </div>
                     </template>
@@ -104,7 +104,7 @@
           <span x-bind:class="`sprint-header-text ${abbreviateSprints ? 'abbreviated' : ''} ${sprint.start === 2 ? 'first-sprint-header-text' : ''} ${sprint.end === lastColumn ? 'last-sprint-header-text' : ''} sticky-against-row-headers`" x-text="(abbreviateSprints ? '' : 'Sprint ') + sprint.index"></span>
         </div>
         <!-- border -->
-        <div x-bind:style="`z-index: 50; grid-column: ${sprint.start} / ${sprint.end + 1}; grid-row: 6 / -1; ${sprintIndex === 0 ? '' : 'border-left: 1px solid var(--sprint-border-color);'}`"></div>
+        <div class="hide-for-narrow-column-density" x-bind:style="`z-index: 50; grid-column: ${sprint.start} / ${sprint.end + 1}; grid-row: 6 / -1; ${sprintIndex === 0 ? '' : 'border-left: 1px solid var(--sprint-border-color);'}`"></div>
       </div>
     </template>
 
@@ -119,7 +119,7 @@
       <!-- density sliders -->
       <div class="sticky-column-header header-controls" style="--row: 1; grid-row: 1 / 3; display: flex; flex-direction: row; align-items: center; padding-right: 0; padding-top: 0; padding-bottom: 0;">
         <svg style="height: 18px; margin-right: 6px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" > <path d="M1 7H3V17H1V7Z" fill="currentColor" /> <path d="M8.44769 7.75732L9.86191 9.17154L8.03344 11H15.9664L14.138 9.17154L15.5522 7.75732L19.7948 12L15.5522 16.2426L14.138 14.8284L15.9664 13H8.03354L9.86194 14.8284L8.44773 16.2426L4.20505 12L8.44769 7.75732Z" fill="currentColor" /><path d="M23 7H21V17H23V7Z" fill="currentColor" /></svg>
-        <sl-range style="flex: 1; margin-top: -3px; margin-right: 6px; padding: 0;" id="density-range" x-bind:min="columnWidthToDensitySliderValue(5)" x-bind:max="columnWidthToDensitySliderValue(200)" x-bind:value="columnWidthToDensitySliderValue(17)" step="0.02" tooltip="none"></sl-range>
+        <sl-range style="flex: 1; margin-top: -3px; margin-right: 6px; padding: 0;" id="density-range" x-bind:min="columnWidthToDensitySliderValue(4)" x-bind:max="columnWidthToDensitySliderValue(200)" x-bind:value="columnWidthToDensitySliderValue(17)" step="0.02" tooltip="none"></sl-range>
         <svg style="height: 18px; margin-right: 6px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" > <path d="M17 1V3L7 3V1L17 1Z" fill="currentColor" /> <path d="M16.2427 8.44772L14.8285 9.86194L13 8.03347L13 15.9665L14.8285 14.138L16.2427 15.5522L12 19.7949L7.75742 15.5522L9.17163 14.138L11 15.9664L11 8.03357L9.17163 9.86194L7.75742 8.44772L12 4.20508L16.2427 8.44772Z" fill="currentColor" /><path d="M17 23V21H7V23H17Z" fill="currentColor" /></svg>
         <div style="flex-basis: 30px; position: relative; inset: 0;">
           <sl-range style="position: absolute; inset: 0; left: -7px; width: 40px; transform: rotate(90deg); padding: 0;" id="row-height-range" x-bind:min="24" x-bind:max="48" x-bind:value="32" step="0.1" tooltip="none"></sl-range>

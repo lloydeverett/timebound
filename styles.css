@@ -273,3 +273,7 @@ sl-range {
 .vim-mode #vim-toggle-button {
   fill: #ebdbb28c;
 }
+
+.narrow-column-density .hide-for-narrow-column-density {
+  display: none;
+}
