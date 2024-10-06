@@ -336,7 +336,7 @@ $(function() {
         store.lastItemEndIndex = result.lastItemEndIndex;
 
         if (result.title) {
-            document.title = result.title + ' - Timebound';
+            document.title = result.title;
         }
     }
     renderData();
