@@ -13,7 +13,7 @@ const narrowColumnDensityBreakpoint = /* <= */ 9 /* px */; // hide elements like
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
-const isCollabUrl = window.location.host && window.location.host.startsWith('collab.');
+const isCollabUrl = window.location.host && window.location.host.startsWith('timebound.app');
 
 function base64ToString(base64) {
     const binString = atob(base64);
@@ -109,7 +109,7 @@ $(function() {
         if (isCollabUrl) {
             localDocSrc = null;
             const docIdInPath = new URL(window.location.href).pathname.split('/').slice(1).join('/');
-            collabDocId = docIdInPath === '' ? 'index' : docIdInPath;
+            collabDocId = docIdInPath === '' ? 'timebound-index' : ('timebound-' + docIdInPath);
         } else {
             localDocSrc = '';
             if (searchParam !== null) {
