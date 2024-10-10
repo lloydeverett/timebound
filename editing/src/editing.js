@@ -79,7 +79,7 @@ export async function initCollab(docId) {
 
   const clientToken = await getOrCreateDocAndToken(HTTP_CONNECTION_STRING, docId);
   clientToken.url = clientToken.url.replace(/^ws:\/\/.*?\//, WS_CONNECTION_STRING);
-  provider = await createYjsProvider(yDoc, clientToken, { disableBc: true });
+  provider = createYjsProvider(yDoc, clientToken, { disableBc: true });
 
   provider.awareness.setLocalStateField('user', {
     name: USER_NAME,

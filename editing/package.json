@@ -4,8 +4,8 @@
   "dependencies": {
     "@codemirror/lang-yaml": "^6.1.1",
     "@replit/codemirror-vim": "^6.2.1",
-    "@y-sweet/client": "^0.5.0",
-    "@y-sweet/sdk": "^0.5.0",
+    "@y-sweet/client": "0.2.1",
+    "@y-sweet/sdk": "0.2.1",
     "codemirror": "^6.0.1",
     "y-codemirror.next": "^0.3.5"
   },
