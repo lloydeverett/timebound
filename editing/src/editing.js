@@ -11,7 +11,7 @@ import { yCollab } from 'y-codemirror.next';
 import { getOrCreateDocAndToken } from "@y-sweet/sdk";
 import { createYjsProvider } from '@y-sweet/client';
 
-const HTTP_CONNECTION_STRING = window.location.origin + "/y-sweet/";;
+const HTTP_CONNECTION_STRING = "ysweet." + window.location.origin;
 const WS_CONNECTION_STRING = HTTP_CONNECTION_STRING.replace(/^https:\/\//, "wss://");
 
 const USER_NAMES = [
