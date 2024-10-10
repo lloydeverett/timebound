@@ -13,6 +13,8 @@ const narrowColumnDensityBreakpoint = /* <= */ 9 /* px */; // hide elements like
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
+const isCollabUrl = window.location.host && window.location.host.startsWith('collab.');
+
 function base64ToString(base64) {
     const binString = atob(base64);
     return decoder.decode(Uint8Array.from(binString, (m) => m.codePointAt(0)));
@@ -89,8 +91,9 @@ $(function() {
         history.replaceState(null, '', url);
     }
 
-    let editor;
     let vimModeEnabled;
+    let localDocSrc;
+    let collabDocId;
     { // load state
         const savedDensity = localStorage.getItem('density');
         if (savedDensity !== null) {
@@ -103,35 +106,51 @@ $(function() {
             $('#row-height-range')[0].value = savedRowHeight;
         }
         const searchParam = new URL(window.location).searchParams.get('data');
-
-        let src = '';
-        if (searchParam !== null) {
-            src = base64ToString(searchParam);
+        if (isCollabUrl) {
+            localDocSrc = null;
+            const docIdInPath = new URL(window.location.href).pathname.split('/').slice(1).join('/');
+            collabDocId = docIdInPath === '' ? 'index' : docIdInPath;
         } else {
-            const savedData = localStorage.getItem('data');
-            if (savedData !== null) {
-                src = savedData;
-                updateUrl(src);
+            localDocSrc = '';
+            if (searchParam !== null) {
+                localDocSrc = base64ToString(searchParam);
+            } else {
+                const savedData = localStorage.getItem('data');
+                if (savedData !== null) {
+                    localDocSrc = savedData;
+                    updateUrl(localDocSrc);
+                }
             }
+            collabDocId = null;
         }
-        editor = editing.createEditor(src, $('#codemirror-host')[0], { enableVimMode: vimModeEnabled }, function() {
-            const src = getSrc();
-            updateUrl(src);
-            localStorage.setItem('data', src);
-            renderData();
+    }
+
+    const initEditor = async function () {
+        if (isCollabUrl) {
+            await editing.initCollab(collabDocId);
+        } else {
+            await editing.initLocal(localDocSrc);
+        }
+
+        const editor = editing.createEditor($('#codemirror-host')[0], { enableVimMode: vimModeEnabled }, function() {
+            const src = editing.getSrc(editor);
+            if (!isCollabUrl) {
+                updateUrl(src);
+                localStorage.setItem('data', src);
+            }
+            renderData(src);
         });
-    }
 
-    function getSrc() {
-        return editor.state.doc.toString();
-    }
+        $('#vim-toggle-button').on('click', function() {
+            vimModeEnabled = !vimModeEnabled;
+            localStorage.setItem('vimModeEnabled', vimModeEnabled ? 'true' : 'false');
+            editing.setVimModeEnabled(editor, vimModeEnabled);
+            $(document.body).toggleClass('vim-mode', vimModeEnabled);
+        });
 
-    $('#vim-toggle-button').on('click', function() {
-        vimModeEnabled = !vimModeEnabled;
-        localStorage.setItem('vimModeEnabled', vimModeEnabled ? 'true' : 'false');
-        editing.setVimModeEnabled(editor, vimModeEnabled);
-        $(document.body).toggleClass('vim-mode', vimModeEnabled);
-    });
+        renderData(editing.getSrc(editor));
+    };
+    initEditor();
 
     function measureScrollbarWidth() {
         const scrollDiv = $('#dummy-scrollbar-measurement-div')[0];
@@ -216,7 +235,7 @@ $(function() {
     $('#fromYear-select').on('change', onYearsChanged);
     $('#toYear-select').on('change', onYearsChanged);
 
-    function renderData() {
+    function renderData(src) {
         const readTags = function(str) {
             return str.split(' ').filter(s => s.length > 0).flatMap(s => {
                 let match = s.match(/^(.+)\*(\d+)$/);
@@ -238,7 +257,7 @@ $(function() {
 
         let result;
         try {
-          const obj = yaml.load(getSrc());
+          const obj = yaml.load(src);
           let row = firstDataRow;
           let sections = [];
           for (const objSection of obj.sections) {
@@ -339,7 +358,6 @@ $(function() {
             document.title = result.title;
         }
     }
-    renderData();
 
     let animating = false;
     function scrollToToday() {
